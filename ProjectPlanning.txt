@@ -37,11 +37,11 @@ Deliverables:
 After the goals have been realised, we will be able to deliver a fully functioning secure authentication server, with a secure data storage. Various documents will also result from this project.
 
 Team:
-Jesse Oosterwijk
-Twan Ophelders
-Mark Tempelaar
-Gijs Nat
-Luuk Ottenhof
+Jesse Oosterwijk - Developer/Scrum Master
+Twan Ophelders - Developer
+Mark Tempelaar - Developer
+Gijs Nat - Developer
+Luuk Ottenhof - Developer/Project Leider
 
 The team will be subdivided into 2 groups. Jesse, Gijs and Twan will attempt to answer question 3, 4 and 5, while Mark and Luuk will answer 1 and 2.
 
