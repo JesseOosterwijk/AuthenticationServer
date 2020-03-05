@@ -38,6 +38,9 @@ Question 4:
 What are the most secure algorithms for hashing authentication credentials?
 
 Introduction
+Many hashing functions have been designed over the years with varying strengths and vulnerabilities. We will judge some of the more popular algorithms on their speed, memory footprint, capabilities for GPU acceleration,
+susceptibility to Application Specific Integrated Circuits (ASIC's) and Field-Programmable Gate Arrays (FPGA's).
+
 
 PBKDF2
 
@@ -64,10 +67,10 @@ Cons:
     -
 
 Scrypt
-Scrypt was developed by Collin Percival while developing an online backup service. It requires a large amount of memory, though this requirement can be lowered at the cos to more processing power
+Scrypt was developed by Collin Percival while developing an online backup service. It requires a large amount of memory, though this requirement can be lowered at the cos to more processing power.
 Pros:
     - Large memory use
-    -
+    - Configurable strength
     -
     -
 
