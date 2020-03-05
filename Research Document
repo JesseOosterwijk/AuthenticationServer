@@ -41,16 +41,12 @@ Introduction
 
 PBKDF2
 Pros:
-    -
-    -
-    -
-    -
+    - Faster then others, because it doesn't use block functions
+    - More suitable for low memory systems
 
 Cons:
-    -
-    -
-    -
-    -
+    - Possible collision attacks
+    - Uses little ram. This makes it more susceptible to brute forcing by gpu, fpga and asics
 
 Argon2
 Pros:
