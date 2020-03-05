@@ -1,4 +1,4 @@
- Context
+Context
  
  Nowadays, many applications handle personal info. To prevent unauthorised access to this personal info, most business make use of an authentication system. Larger business often opt to identify users based on a 'token', which has the advantage of being stateless, and being reusable for other web services.
  The entire process of entering credentials, receiving a token in return, and holding on to it carries some security concerns. As part of this research, we will attempt to answer some questions related to these concerns. Our main research question is thus as follows:
@@ -38,8 +38,8 @@ After the goals have been realised, we will be able to deliver a fully functioni
 
 Team:
 Jesse Oosterwijk - Developer/Scrum Master
-Twan Ophelders - Developer
 Mark Tempelaar - Developer
+Twan Ophelders - Developer
 Gijs Nat - Developer
 Luuk Ottenhof - Developer/Project Leider
 
@@ -57,3 +57,20 @@ We will test our components and infrastrucure locally
 Risks:
 During development we run the risk of not sufficiently complying with GDPR. We will try to mitigate this by allowing a user to delete their own information. The probability of not achieving this is low but the impact is high since failure to properly consider the law would make use of the final product unviable. 
 
+Sprint planning:
+
+Sprint 0: 20/02/2020 - 12/03/2020
+    - Project plan & description
+    - Define main & subquestions
+    
+Sprint 1: 12/03/2020 - 02/04/2020
+    - Research subquestions
+    - Architeture diagram
+    
+Sprint 2: 02/04/2020 - 23/04/2020
+
+Sprint 3: 23/04/2020 - 14/05/2020
+
+Sprint 4: 14/05/2020 - 04/06/2020
+
+Sprint 5: 04/06/2020 - 25/06/2020
