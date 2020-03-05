@@ -1,0 +1,105 @@
+Research document - Authisten
+
+Subquestions:
+
+Question 1: 
+
+Question 2:
+
+In order to establish a secure connection between a client and a server both sides send a token to confirm the identity of the other.
+
+The client’s security package sends an opaque message containing a token and any other application protocol relevent information to the client, the client sends the message to the server and the server sends it to it’s security package. The client and server can’t interpret or edit the message. The security package interprets the token and confirms whether or not the client was authenticated.
+
+The client receives the server’s token in a message, it retrieves the token from the message and uses the token in a call to it’s security package. The client then calls the security package again to confirm whether or not a secure connection has been established.[1]
+
+
+Question 3:
+
+How can we securely store passwords and/or other authentication details on the server?
+
+In this chapter we will discuss the different approaches to storing passwords and compare their respective advantages and disadvantages in the context of our authentication mechanism.
+Furthermore, we will discuss which of these different approaches will be implemented in our authentication mechanism and why this choice was made.
+This chapter will also discuss where and with what technology passwords and/or other authentication details can be securely saved.
+During this research, different sources will be consulted to bring us closer to the answer to the question above.
+These will be referenced at the end of the chapter.
+
+Different approaches
+
+Location and technology of storage
+
+Database security
+
+Data segmentation & seperation
+
+Conclusion
+
+Question 4:
+
+What are the most secure algorithms for hashing authentication credentials?
+
+Introduction
+
+PBKDF2
+Pros:
+    -
+    -
+    -
+    -
+
+Cons:
+    -
+    -
+    -
+    -
+
+Argon2
+Pros:
+    -
+    -
+    -
+    -
+
+Cons:
+    -
+    -
+    -
+    -
+
+Scrypt
+Pros:
+    -
+    -
+    -
+    -
+
+Cons:
+    -
+    -
+    -
+    -
+
+Bcrypt
+Pros:
+    -
+    -
+    -
+    -
+
+Cons:
+    -
+    -
+    -
+    -
+
+Others
+
+Conclusion
+
+Question 5:
+
+Question 6:
+
+
+Sources:
+[1]: https://docs.microsoft.com/en-us/windows/win32/secauthn/establishing-a-secure-connection-with-authentication
+[2]: https://owasp.org/www-project-cheat-sheets/cheatsheets/Password_Storage_Cheat_Sheet
