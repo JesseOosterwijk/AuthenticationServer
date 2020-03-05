@@ -66,17 +66,21 @@ Cons:
     -
 
 Scrypt
+Scrypt was developed by Collin Percival while developing an online backup service. It requires a large amount of memory, though this requirement can be lowered at the cos to more processing power
 Pros:
-    -
+    - Large memory use
     -
     -
     -
 
 Cons:
+    - Not designed to deter GPU based attacks
+    - Not designed as a password hashing function, thus not particularly slow
     -
-    -
-    -
-    -
+    
+Sources:
+    https://en.bitcoinwiki.org/wiki/Scrypt
+    https://en.wikipedia.org/wiki/Scrypt
 
 Bcrypt
 Pros:
