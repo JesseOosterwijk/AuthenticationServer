@@ -51,7 +51,8 @@ Pros:
 
 Cons:
     - Possible collision attacks
-    - Uses little ram. This makes it more susceptible to brute forcing by gpu, fpga and asics
+    - Uses little ram
+    - Susceptible to brute forcing by gpu, fpga and asics
 
 Argon2
 Pros:
