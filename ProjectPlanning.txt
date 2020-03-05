@@ -1,7 +1,9 @@
 Context
  
- Nowadays, many applications handle personal info. To prevent unauthorised access to this personal info, most business make use of an authentication system. Larger business often opt to identify users based on a 'token', which has the advantage of being stateless, and being reusable for other web services.
- The entire process of entering credentials, receiving a token in return, and holding on to it carries some security concerns. As part of this research, we will attempt to answer some questions related to these concerns. Our main research question is thus as follows:
+ Nowadays, many applications handle personal info. To prevent unauthorised access to this personal info, most business make use of an authentication system.
+ Larger business often opt to identify users based on a 'token', which has the advantage of being stateless, and being reusable for other web services.
+ The entire process of entering credentials, receiving a token in return, and holding on to it carries some security concerns. 
+ As part of this research, we will attempt to answer some questions related to these concerns. Our main research question is thus as follows:
  
 How can we develop and implement a secure authentication mechanism for an application service?
 
@@ -31,10 +33,13 @@ Goals:
 In the end, the goal is to have a secure authentication server and data storage that can be used for external web services.
 
 Scope:
-Within this project, we will first answer the aforementioned questions, and then proceed to develop the authentication mechanism and setup the infrastructure it will be hosted on. We will not make use of existing authentication mechanisms, nor will we develop a user friendly interface.
+Within this project, we will first answer the aforementioned questions,
+and then proceed to develop the authentication mechanism and setup the infrastructure it will be hosted on.
+We will not make use of existing authentication mechanisms, nor will we develop a user friendly interface.
 
 Deliverables:
-After the goals have been realised, we will be able to deliver a fully functioning secure authentication server, with a secure data storage. Various documents will also result from this project.
+After the goals have been realised, we will be able to deliver a fully functioning secure authentication server, with a secure data storage.
+Various documents will also result from this project.
 
 Team:
 Jesse Oosterwijk - Developer/Scrum Master
@@ -55,7 +60,8 @@ Test Environment:
 We will test our components and infrastrucure locally
 
 Risks:
-During development we run the risk of not sufficiently complying with GDPR. We will try to mitigate this by allowing a user to delete their own information. The probability of not achieving this is low but the impact is high since failure to properly consider the law would make use of the final product unviable. 
+During development we run the risk of not sufficiently complying with GDPR. We will try to mitigate this by allowing a user to delete their own information.
+The probability of not achieving this is low but the impact is high since failure to properly consider the law would make use of the final product unviable. 
 
 Sprint planning:
 
