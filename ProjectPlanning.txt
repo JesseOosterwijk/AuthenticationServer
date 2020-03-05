@@ -91,6 +91,27 @@ The client receives the server’s token in a message, it retrieves the token fr
 
 Question 3:
 
+How can we securely store passwords and/or other authentication details on the server?
+
+In this chapter we will discuss the different approaches to storing passwords and compare their respective advantages and disadvantages in the context of our authentication mechanism.
+Furthermore, we will discuss which of these different approaches will be implemented in our authentication mechanism and why this choice was made.
+This chapter will also discuss where and with what technology passwords and/or other authentication details can be securely saved.
+During this research, different sources will be consulted to bring us closer to the answer to the question above.
+These will be referenced at the end of the chapter.
+
+Different approaches
+
+Location and technology of storage
+
+Database security
+
+Data segmentation & seperation
+
+
+
+Conclusion
+
+
 Question 4:
 
 Question 5:
