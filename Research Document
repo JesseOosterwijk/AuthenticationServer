@@ -85,14 +85,15 @@ Sources:
 
 Bcrypt
 Pros:
-    -
-    -
+    - Key factor/Configurable slowness (cost)
+    Extremely resistant to rainbow table-based attacks
+    - Good output hash
     -
     -
 
 Cons:
-    -
-    -
+    - susceptible to gpu, fgpa and ascis
+    - Increased load on server resources
     -
     -
 
