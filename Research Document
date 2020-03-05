@@ -40,6 +40,8 @@ What are the most secure algorithms for hashing authentication credentials?
 Introduction
 
 PBKDF2
+
+PBKDF2 is a key derivation functions with a sliding computational cost, used to reduce vulnerabilities to brute force attacks. [3]
 Pros:
     - Faster then others, because it doesn't use block functions
     - More suitable for low memory systems
@@ -103,3 +105,4 @@ Question 6:
 Sources:
 [1]: https://docs.microsoft.com/en-us/windows/win32/secauthn/establishing-a-secure-connection-with-authentication
 [2]: https://owasp.org/www-project-cheat-sheets/cheatsheets/Password_Storage_Cheat_Sheet
+[3]: https://en.wikipedia.org/wiki/PBKDF2
