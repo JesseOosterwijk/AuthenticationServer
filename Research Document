@@ -56,16 +56,14 @@ Cons:
 
 Argon2
 Pros:
-    -
-    -
-    -
-    -
+    - Resistant to acceleration by GPU, FPGA and ASIC for most Brute-Force and Dictionairy attacks (https://markeliasen.com/developers-its-2019-hash-password-accordingly/)
+    - Argon2d (Suitable for Cryptocurrencies)
+    - Argon2i (Suitable for Passwords, Protects againt side-channel leakage) (https://medium.com/@mpreziuso/password-hashing-pbkdf2-scrypt-bcrypt-and-argon2-e25aaf41598e)
 
 Cons:
-    -
-    -
-    -
-    -
+    - Lacking good library support
+    - Can slow down when not properly configured
+   
 
 Scrypt
 Scrypt was developed by Collin Percival while developing an online backup service. It requires a large amount of memory, though this requirement can be lowered at the cos to more processing power.
