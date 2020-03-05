@@ -46,7 +46,7 @@ Luuk Ottenhof - Developer/Project Leider
 The team will be subdivided into 2 groups. Jesse, Gijs and Twan will attempt to answer question 3, 4 and 5, while Mark and Luuk will answer 1 and 2.
 
 Global Planning:
-Week 1 - 4: orientation and definitation.
+Week 1 - 4: Orientation and definitation.
 Week 5 - 8: Research
 Week 6 - 16: Product Development
 Week 6 - 18: Product testing
