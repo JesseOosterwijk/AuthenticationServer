@@ -136,9 +136,14 @@ What is the most secure way to segment the infrastructure of the authentication 
 
 netwerktekening etc.
 
-Question 6: Luuk Ottenhof
+Question 6: How can we test the security of the infrastructure of the authentication mechanism?
 
-How can we test the security of the infrastructure of the authentication mechanism?
+This question will be answered with pre-existing knowledge about software development and cyber security
+
+The various component of the authentication mechanism will be tested in differing ways. To ensure that the mechanism itself functions according toe expectations, unit tests and integration tests can be made. The security of the network should be tested by taking the position of a malicous attacker from the outside of the network, using techniques such as portscanning to attempt to identify vulnerabilities in the hopefully secure system. Additionally, the strength of the chosen password hashing algorithm will be verified by use of a password cracking tool. In the case that a SQL database is used, the authenication mechanism will be tested for vulnerability to SQL Injection. Finally, brute-force and/or dictionary attacks can be attempted to examine the resilence of the mechanism to such attacks.
+
+From an internal perspective, the security of the network could be examined by attempting to access various parts of the systems and checking whether or not the incidents have been reported. These tests will alse include attempts to gain unauthorised access to a part of the system from other compromised parts to ensure data is properly segmented and segregated. 
+
 
 Sources:
 [1]: https://docs.microsoft.com/en-us/windows/win32/secauthn/establishing-a-secure-connection-with-authentication
