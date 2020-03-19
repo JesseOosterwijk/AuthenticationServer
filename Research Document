@@ -1,32 +1,63 @@
 Research document
+---------------------------------------------------------------------------------------------------------------------------
 
-Subquestions:
+This document will serve a collection of the research we have 
 
-Question 1: Mark Tempelman
+---------------------------------------------------------------------------------------------------------------------------
 
-What is the most secure way to track user identity via API?
+Research questions:
+1. What is the most secure way to track user identity?
+2. How can we establish a secure connection for exchanging information with the authentication mechanism?
+3. How can we securely store passwords and/or other authentication details on the server?
+4. What are the most secure algorithms for hashing authentication credentials?
+5. What is the most secure way to segment the infrastructure of the authentication mechanism?
+6. How can we test the security of the infrastructure of the authentication mechanism?
 
-Here we will discuss different ways to track user identity based on different authentication methods. First, we will discuss a few major approaches within the many proprietary authentication methods. We will also discuss the main advantages and disadvantages when using these authentication methods. At the end of this chapter you will find a brief recap of the different methods and a conclusion based on research.
+---------------------------------------------------------------------------------------------------------------------------
+Question 1:
 
-Some major approaches in authentication:
-    - HTTP Basic authentication
-    - API Keys
-    - Token-based
+What is the most secure way to track user identity?
+---------------------------------------------------------------------------------------------------------------------------
 
-HTTP Basic authentication
+Here we will discuss different ways to track user identity based on different authentication methods. First, we will 
+discuss a few major approaches within the many proprietary authentication methods. We will also discuss the main advantages 
+and disadvantages when using these authentication methods. At the end of this chapter you will find a brief recap of the 
+different methods and a conclusion based on research.
+
+Most user tracking is done by sending a token or cookie or key with every request to the server. The server is able to
+authenticate the request being send and track the user that is doing it. 
+
+Cookie based authentication and identity : 
+Cookies save items with key values. For authentication the key would hold 
+something like sessionid. Every time you make a request this cookie is send to the server with authenticates and subsequently
+tracks the cookie. Cookies can have an expiration time. There are signed cookies, these way no one else can make sense of your
+cookies. These cookies are saved in the browser of a client. This way we also don't have to store a lot of data server side.
 
 Token-based
-Another method of verifying users is by creating a string of characters, or a "token", by the server which is then kept on the client for use in authorization later. The token has the advantage of being able to securely store and keep track of additional data, such as expiration date. The use of asymmetrical encryption can ensure that multiple parties are capable of verifying that the token is valid and the user is actually who they say they are, while only granting the capability of actually creating and correctly signing the token to a single entity. It has the additonal advantage of being stateless; after the token has been created it does not rely on the state of any particular service to be used.
+Another method of verifying users is by creating a string of characters, or a "token", by the server which is then kept on 
+the client for use in authorization later. The token has the advantage of being able to securely store and keep track of 
+additional data, such as expiration date. The use of asymmetrical encryption can ensure that multiple parties are capable 
+of verifying that the token is valid and the user is actually who they say they are, while only granting the capability of 
+actually creating and correctly signing the token to a single entity. It has the additonal advantage of being stateless; 
+after the token has been created it does not rely on the state of any particular service to be used.
 
+---------------------------------------------------------------------------------------------------------------------------
 Question 2:
 
 How can we establish a secure connection for exchanging information with the authentication mechanism?
+---------------------------------------------------------------------------------------------------------------------------
 
-In order to establish a secure connection between a client and a server both sides send a token to confirm the identity of the other.
+In order to establish a secure connection between a client and a server both sides send a token to confirm the identity of 
+the other.
 
-The client’s security package sends an opaque message containing a token and any other application protocol relevant information to the client, the client sends the message to the server and the server sends it to it’s security package. The client and server can’t interpret or edit the message. The security package interprets the token and confirms whether or not the client was authenticated.
+The client’s security package sends an opaque message containing a token and any other application protocol relevant 
+information to the client, the client sends the message to the server and the server sends it to it’s security package. 
+The client and server can’t interpret or edit the message. The security package interprets the token and confirms whether 
+or not the client was authenticated.
 
-The client receives the server’s token in a message, it retrieves the token from the message and uses the token in a call to it’s security package. The client then calls the security package again to confirm whether or not a secure connection has been established.[1]
+The client receives the server’s token in a message, it retrieves the token from the message and uses the token in a call 
+to it’s security package. The client then calls the security package again to confirm whether or not a secure connection 
+has been established.[Q2]
 
 The main application protocols used for information transfer are:
     - HTTP
@@ -41,19 +72,25 @@ The main application protocols used for information transfer are:
         Stands for Simple Mail Transfer Protocol is a communication protocol used for email transmission. SMTP is unencrypted.
 
 Conclusion:
-HTTPS is the best way to establish a secure connection with the authentication mechanism because the other protocols are unencrypted and/or used for different types of communication.
 
+HTTPS is the best way to establish a secure connection with the authentication mechanism because the other protocols are 
+unencrypted and/or used for different types of communication.
 
+---------------------------------------------------------------------------------------------------------------------------
 Question 3: Twan ophelders
 
 How can we securely store passwords and/or other authentication details on the server?
+---------------------------------------------------------------------------------------------------------------------------
 
 Introduction:
 
-In this chapter we will discuss the different approaches to storing passwords and compare their respective advantages and disadvantages in the context of our authentication mechanism.
-Furthermore, we will discuss which of these different approaches will be implemented in our authentication mechanism and why this choice was made.
-This chapter will also discuss where and with what technology passwords and/or other authentication details can be securely saved.
-During this research, different sources will be consulted to bring us closer to the answer to the question above.
+In this chapter we will discuss the different approaches to storing passwords and compare their respective advantages and 
+disadvantages in the context of our authentication mechanism.
+
+Furthermore, we will discuss which of these different approaches will be implemented in our authentication mechanism and 
+why this choice was made. This chapter will also discuss where and with what technology passwords and/or other 
+authentication details can be securely saved. During this research, different sources will be consulted to bring us closer 
+to the answer to the question above.
 These will be referenced at the end of the chapter.
 
 Hashing
@@ -64,43 +101,47 @@ The encrypted password, salt and the key will then be disributed over 3 differen
 
 Storage location
 
-Here we can choose out of 2 commonly used techniques: local storage and hosted storage. As our product has to be scalable, we'll be using a hosted storage.
-We want our data to be stored in a structured manner, so an SQL datastore is what we'll be using. Which datastore this is depends on customer demands.
-For demonstration purposes we'll be using a trio of SQL servers. This will be further explained in the chapter 'data segmentation and seperation'.
+Here we can choose out of 2 commonly used techniques: local storage and hosted storage. As our product has to be scalable, 
+we'll be using a hosted storage. We want our data to be stored in a structured manner, so an SQL datastore is what we'll be 
+using. Which datastore this is depends on customer demands. For demonstration purposes we'll be using a trio of SQL servers. 
+This will be further explained in the chapter 'data segmentation and seperation'.
 
 Storage security
 
-All three databases will be set up with a user which has read/write acces to the needed tables. These users are limited to LAN use only. 
-Users with excalated priveleges will be restricted to local use only and therefor cannot be used from the outside.
+All three databases will be set up with a user which has read/write acces to the needed tables. These users are limited to 
+LAN use only. Users with excalated priveleges will be restricted to local use only and therefor cannot be used from the outside.
+[Q3.1]
 
 Data segmentation and seperation
 
-Storage of the encrypted password, salt and the key will then be disributed over 3 different data stores. The datastores will preferably be physically seperate, with different users and different passwords.
-In the case a hacker were to gain access to one of these stores, they still will not be able to use any password data inside it. 
-If this is not possible due to limitations in cost or otherwise, seperate databases on the same server are also sufficient. 
-If choosing this approach, do make sure to create 3 different users with different passwords, that only have acces to one of those databases.
+Storage of the encrypted password, salt and the key will then be disributed over 3 different data stores. The datastores will 
+preferably be physically seperate, with different users and different passwords. In the case a hacker were to gain access to 
+one of these stores, they still will not be able to use any password data inside it. If this is not possible due to 
+limitations in cost or otherwise, seperate databases on the same server are also sufficient. If choosing this approach, do 
+make sure to create 3 different users with different passwords, that only have acces to one of those databases.
 Refer to chapter 'storage security' for additional information.
 
 Conclusion
 
 We will be hashing our password with a salt and a pepper. The output will be encrypted using a unique key.
-We will be using a trio of databases, each of which stores a different part of our password. In the case a hacker gains access to one of these databases, the data inside it is useless.
+We will be using a trio of databases, each of which stores a different part of our password. In the case a hacker gains 
+access to one of these databases, the data inside it is useless.
 
-Sources:
-https://stormpath.com/blog/password-security-right-way
-
+---------------------------------------------------------------------------------------------------------------------------
 Question 4:
 
 What are the most secure algorithms for hashing authentication credentials?
+---------------------------------------------------------------------------------------------------------------------------
 
 Introduction
-Many hashing functions have been designed over the years with varying strengths and vulnerabilities. We will judge some of the more popular algorithms on their speed, memory footprint, capabilities for GPU acceleration,
-susceptibility to Application Specific Integrated Circuits (ASIC's) and Field-Programmable Gate Arrays (FPGA's).
+Many hashing functions have been designed over the years with varying strengths and vulnerabilities. We will judge some of
+the more popular algorithms on their speed, memory footprint, capabilities for GPU acceleration, susceptibility to 
+Application Specific Integrated Circuits (ASIC's) and Field-Programmable Gate Arrays (FPGA's).
 
 
 PBKDF2
 
-PBKDF2 is a key derivation functions with a sliding computational cost, used to reduce vulnerabilities to brute force attacks. [3]
+PBKDF2 is a key derivation functions with a sliding computational cost, used to reduce vulnerabilities to brute force attacks. [Q4]
 Pros:
     - Faster then others, because it doesn't use block functions
     - More suitable for low memory systems
@@ -112,9 +153,11 @@ Cons:
 
 Argon2
 Pros:
-    - Resistant to acceleration by GPU, FPGA and ASIC for most Brute-Force and Dictionairy attacks (https://markeliasen.com/developers-its-2019-hash-password-accordingly/)
+    - Resistant to acceleration by GPU, FPGA and ASIC for most Brute-Force and Dictionairy attacks 
+        (https://markeliasen.com/developers-its-2019-hash-password-accordingly/)
     - Argon2d (Suitable for Cryptocurrencies)
-    - Argon2i (Suitable for Passwords, Protects againt side-channel leakage) (https://medium.com/@mpreziuso/password-hashing-pbkdf2-scrypt-bcrypt-and-argon2-e25aaf41598e)
+    - Argon2i (Suitable for Passwords, Protects againt side-channel leakage) 
+        (https://medium.com/@mpreziuso/password-hashing-pbkdf2-scrypt-bcrypt-and-argon2-e25aaf41598e)
 
 Cons:
     - Lacking good library support
@@ -122,7 +165,9 @@ Cons:
    
 
 Scrypt
-Scrypt was developed by Collin Percival while developing an online backup service. It requires a large amount of memory, though this requirement can be lowered at the cos to more processing power.
+
+Scrypt was developed by Collin Percival while developing an online backup service. It requires a large amount of memory, 
+though this requirement can be lowered at the cos to more processing power.
 Pros:
     - Large memory use
     - Configurable strength
@@ -151,24 +196,42 @@ Others
 Conclusion
 
 Based on our findings we will be using the Argon2 algorithm to hash passwords within our application. 
-The main reason that led to this decision is Argon2's ability to protect against hardware attacks, such as fpga and asic based attacks, and it's resiliency to dictionary attacks.
+The main reason that led to this decision is Argon2's ability to protect against hardware attacks, such as fpga and asic 
+based attacks, and it's resiliency to dictionary attacks.
 
+---------------------------------------------------------------------------------------------------------------------------
 Question 5: Jesse Oosterwijk   
 
 What is the most secure way to segment the infrastructure of the authentication mechanism?
+---------------------------------------------------------------------------------------------------------------------------
 
 netwerktekening etc.
 
-Question 6: How can we test the security of the infrastructure of the authentication mechanism?
+---------------------------------------------------------------------------------------------------------------------------
+Question 6: 
+
+How can we test the security of the infrastructure of the authentication mechanism?
+---------------------------------------------------------------------------------------------------------------------------
 
 This question will be answered with pre-existing knowledge about software development and cyber security
 
-The various component of the authentication mechanism will be tested in differing ways. To ensure that the mechanism itself functions according toe expectations, unit tests and integration tests can be made. The security of the network should be tested by taking the position of a malicous attacker from the outside of the network, using techniques such as portscanning to attempt to identify vulnerabilities in the hopefully secure system. Additionally, the strength of the chosen password hashing algorithm will be verified by use of a password cracking tool. In the case that a SQL database is used, the authenication mechanism will be tested for vulnerability to SQL Injection. Finally, brute-force and/or dictionary attacks can be attempted to examine the resilence of the mechanism to such attacks.
+The various component of the authentication mechanism will be tested in differing ways. To ensure that the mechanism itself
+functions according toe expectations, unit tests and integration tests can be made. The security of the network should be 
+tested by taking the position of a malicous attacker from the outside of the network, using techniques such as portscanning 
+to attempt to identify vulnerabilities in the hopefully secure system. Additionally, the strength of the chosen password 
+hashing algorithm will be verified by use of a password cracking tool. In the case that a SQL database is used, the 
+authenication mechanism will be tested for vulnerability to SQL Injection. Finally, brute-force and/or dictionary attacks 
+can be attempted to examine the resilence of the mechanism to such attacks. This will be reported in a small pentest.
 
-From an internal perspective, the security of the network could be examined by attempting to access various parts of the systems and checking whether or not the incidents have been reported. These tests will alse include attempts to gain unauthorised access to a part of the system from other compromised parts to ensure data is properly segmented and segregated. 
+From an internal perspective, the security of the network could be examined by attempting to access various parts of the 
+systems and checking whether or not the incidents have been reported. These tests will alse include attempts to gain 
+unauthorised access to a part of the system from other compromised parts to ensure data is properly segmented and segregated. 
 
+---------------------------------------------------------------------------------------------------------------------------
 
 Sources:
-[1]: https://docs.microsoft.com/en-us/windows/win32/secauthn/establishing-a-secure-connection-with-authentication
-[2]: https://owasp.org/www-project-cheat-sheets/cheatsheets/Password_Storage_Cheat_Sheet
-[3]: https://en.wikipedia.org/wiki/PBKDF2
+[Q1]:
+[Q2]: https://docs.microsoft.com/en-us/windows/win32/secauthn/establishing-a-secure-connection-with-authentication
+[Q3.1]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+[Q3.2]: https://stormpath.com/blog/password-security-right-way
+[Q4]: https://en.wikipedia.org/wiki/PBKDF2
