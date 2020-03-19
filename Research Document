@@ -230,7 +230,7 @@ unauthorised access to a part of the system from other compromised parts to ensu
 ---------------------------------------------------------------------------------------------------------------------------
 
 Sources:
-[Q1]:
+[Q1]: https://www.researchgate.net/publication/220450048_Cookie-Based_Virtual_Password_Authentication_Protocol
 [Q2]: https://docs.microsoft.com/en-us/windows/win32/secauthn/establishing-a-secure-connection-with-authentication
 [Q3.1]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
 [Q3.2]: https://stormpath.com/blog/password-security-right-way
