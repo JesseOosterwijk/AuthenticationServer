@@ -14,7 +14,7 @@ How can we establish a secure connection for exchanging information with the aut
 
 In order to establish a secure connection between a client and a server both sides send a token to confirm the identity of the other.
 
-The client’s security package sends an opaque message containing a token and any other application protocol relevent information to the client, the client sends the message to the server and the server sends it to it’s security package. The client and server can’t interpret or edit the message. The security package interprets the token and confirms whether or not the client was authenticated.
+The client’s security package sends an opaque message containing a token and any other application protocol relevant information to the client, the client sends the message to the server and the server sends it to it’s security package. The client and server can’t interpret or edit the message. The security package interprets the token and confirms whether or not the client was authenticated.
 
 The client receives the server’s token in a message, it retrieves the token from the message and uses the token in a call to it’s security package. The client then calls the security package again to confirm whether or not a secure connection has been established.[1]
 
