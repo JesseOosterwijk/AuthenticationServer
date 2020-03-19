@@ -131,6 +131,9 @@ Others
 
 Conclusion
 
+Based on our findings we will be using the Argon2 algorithm to hash passwords within our application. 
+The main reason that led to this decision is Argon2's ability to protect against hardware attacks, such as fpga and asic based attacks, and it's resiliency to dictionary attacks.
+
 Question 5:
 
 What is the most secure way to segment the infrastructure of the authentication mechanism?
