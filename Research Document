@@ -48,23 +48,43 @@ Question 3: Twan ophelders
 
 How can we securely store passwords and/or other authentication details on the server?
 
+Introduction:
+
 In this chapter we will discuss the different approaches to storing passwords and compare their respective advantages and disadvantages in the context of our authentication mechanism.
 Furthermore, we will discuss which of these different approaches will be implemented in our authentication mechanism and why this choice was made.
 This chapter will also discuss where and with what technology passwords and/or other authentication details can be securely saved.
 During this research, different sources will be consulted to bring us closer to the answer to the question above.
 These will be referenced at the end of the chapter.
 
+Hashing
+
+We'll be hasing the password using the Argon2 algorithm. See question 4 for a detailed expanation.
+For added computational cost, we'll be adding a salt and pepper to the password, aswell as encrypting the output with a unique key. 
+The encrypted password, salt and the key will then be disributed over 3 different data stores.
+
 Storage location
-    - Local file system
-    - Hosted file system
+
+Here we can choose out of 2 commonly used techniques: local storage and hosted storage. As our product has to be scalable, we'll be using a hosted storage.
+We want our data to be stored in a structured manner, so an SQL datastore is what we'll be using. Which datastore this is depends on customer demands.
+For demonstration purposes we'll be using a trio of SQL servers. This will be further explained in the chapter 'data segmentation and seperation'.
 
 Storage security
-    - 
+
+All three databases will be set up with a user which has read/write acces to the needed tables. These users are limited to LAN use only. 
+Users with excalated priveleges will be restricted to local use only and therefor cannot be used from the outside.
 
 Data segmentation and seperation
-    - 
+
+Storage of the encrypted password, salt and the key will then be disributed over 3 different data stores. The datastores will preferably be physically seperate, with different users and different passwords.
+In the case a hacker were to gain access to one of these stores, they still will not be able to use any password data inside it. 
+If this is not possible due to limitations in cost or otherwise, seperate databases on the same server are also sufficient. 
+If choosing this approach, do make sure to create 3 different users with different passwords, that only have acces to one of those databases.
+Refer to chapter 'storage security' for additional information.
 
 Conclusion
+
+We will be hashing our password with a salt and a pepper. The output will be encrypted using a unique key.
+We will be using a trio of databases, each of which stores a different part of our password. In the case a hacker gains access to one of these databases, the data inside it is useless.
 
 Question 4:
 
