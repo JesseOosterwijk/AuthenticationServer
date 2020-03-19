@@ -2,9 +2,13 @@ Research document
 
 Subquestions:
 
-Question 1: 
+Question 1:
+
+What is the most secure way to track user identity?
 
 Question 2:
+
+How can we establish a secure connection for exchanging information with the authentication mechanism?
 
 In order to establish a secure connection between a client and a server both sides send a token to confirm the identity of the other.
 
@@ -102,8 +106,11 @@ Conclusion
 
 Question 5:
 
+What is the most secure way to segment the infrastructure of the authentication mechanism?
+
 Question 6:
 
+How can we test the security of the infrastructure of the authentication mechanism?
 
 Sources:
 [1]: https://docs.microsoft.com/en-us/windows/win32/secauthn/establishing-a-secure-connection-with-authentication
