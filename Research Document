@@ -20,10 +20,18 @@ The client receives the server’s token in a message, it retrieves the token fr
 
 The main application protocols used for information transfer are:
     - HTTP
+        HTTP stands for HyperText Transfer Protocol and is a protocol used to transfer unencrypted data
     - HTTPS
+        HTTPS stands for HyperText Transfer Protocol Secure and is a protocol used for transfering encrypted data 
     - TELNET
+        TELNET is an unencrypted protocol used for bidirectional text communicaiton using a terminal connection
     - FTP
+        Stands for File Transfer Protocol it is used to transfer files between clients and servers. FTP is not encrypted.
     - SMTP
+        Stands for Simple Mail Transfer Protocol is a communication protocol used for email transmission. SMTP is unencrypted.
+
+Conclusion:
+HTTPS is the best way to establish a secure connection with the authentication mechanism because the other protocols are unencrypted and/or used for different types of communication.
 
 
 Question 3:
