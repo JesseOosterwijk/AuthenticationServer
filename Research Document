@@ -86,6 +86,9 @@ Conclusion
 We will be hashing our password with a salt and a pepper. The output will be encrypted using a unique key.
 We will be using a trio of databases, each of which stores a different part of our password. In the case a hacker gains access to one of these databases, the data inside it is useless.
 
+Sources:
+https://stormpath.com/blog/password-security-right-way
+
 Question 4:
 
 What are the most secure algorithms for hashing authentication credentials?
