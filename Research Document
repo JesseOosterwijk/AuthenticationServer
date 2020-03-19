@@ -4,7 +4,14 @@ Subquestions:
 
 Question 1:
 
-What is the most secure way to track user identity?
+What is the most secure way to track user identity via API?
+
+Here we will discuss different ways to track user identity based on different authentication methods. First, we will discuss a few major approaches within the many proprietary authentication methods. We will also discuss the main advantages and disadvantages when using these authentication methods. At the end of this chapter you will find a brief recap of the different methods and a conclusion based on research.
+
+Some major approaches in authentication:
+    - HTTP Basic authentication
+    - API Keys
+    - OAuth
 
 Token-based :)
 
