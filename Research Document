@@ -2,7 +2,7 @@ Research document
 
 Subquestions:
 
-Question 1:
+Question 1: Mark Tempelman
 
 What is the most secure way to track user identity via API?
 
@@ -16,9 +16,7 @@ Some major approaches in authentication:
 HTTP Basic authentication
 
 Token-based
-Another method of verifying users is by creating a string of characters, or a "token", by the server which is then kept on the client for use in authorization later. The token has the advantage of being able to securely store and keep track of additional data, such as expiration date. The use of asymmetrical encryption can ensure that multiple parties are capable of verifying that the token is valid and the user is actually who they say they are, while only granting the capability of actually creating and correctly signing the token to a single entity. It has the additonal advantage of benig stateless; after the token has been created it does not rely on the state of any particular service to be used.
-
-
+Another method of verifying users is by creating a string of characters, or a "token", by the server which is then kept on the client for use in authorization later. The token has the advantage of being able to securely store and keep track of additional data, such as expiration date. The use of asymmetrical encryption can ensure that multiple parties are capable of verifying that the token is valid and the user is actually who they say they are, while only granting the capability of actually creating and correctly signing the token to a single entity. It has the additonal advantage of being stateless; after the token has been created it does not rely on the state of any particular service to be used.
 
 Question 2:
 
@@ -46,7 +44,7 @@ Conclusion:
 HTTPS is the best way to establish a secure connection with the authentication mechanism because the other protocols are unencrypted and/or used for different types of communication.
 
 
-Question 3:
+Question 3: Twan ophelders
 
 How can we securely store passwords and/or other authentication details on the server?
 
@@ -56,19 +54,15 @@ This chapter will also discuss where and with what technology passwords and/or o
 During this research, different sources will be consulted to bring us closer to the answer to the question above.
 These will be referenced at the end of the chapter.
 
-Different approaches (database setup)
+Storage location
+    - Local file system
+    - Hosted file system
 
-
-Location and technology of storage
-    - Local server
-    - Hosted Database
-    - Others
-
-Database security (how passwords are stored)
-    - hash
+Storage security
     - 
 
-Data segmentation & seperation
+Data segmentation and seperation
+    - 
 
 Conclusion
 
@@ -109,8 +103,6 @@ Scrypt was developed by Collin Percival while developing an online backup servic
 Pros:
     - Large memory use
     - Configurable strength
-    -
-    -
 
 Cons:
     - Not designed to deter GPU based attacks
@@ -126,14 +118,10 @@ Pros:
     - Key factor/Configurable slowness (cost)
     Extremely resistant to rainbow table-based attacks
     - Good output hash
-    -
-    -
 
 Cons:
     - susceptible to gpu, fgpa and ascis
     - Increased load on server resources
-    -
-    -
 
 Others
 
@@ -142,11 +130,13 @@ Conclusion
 Based on our findings we will be using the Argon2 algorithm to hash passwords within our application. 
 The main reason that led to this decision is Argon2's ability to protect against hardware attacks, such as fpga and asic based attacks, and it's resiliency to dictionary attacks.
 
-Question 5:
+Question 5: Jesse Oosterwijk   
 
 What is the most secure way to segment the infrastructure of the authentication mechanism?
 
-Question 6:
+netwerktekening etc.
+
+Question 6: Luuk Ottenhof
 
 How can we test the security of the infrastructure of the authentication mechanism?
 
