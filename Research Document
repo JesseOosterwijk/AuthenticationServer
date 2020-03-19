@@ -11,7 +11,9 @@ Here we will discuss different ways to track user identity based on different au
 Some major approaches in authentication:
     - HTTP Basic authentication
     - API Keys
-    - OAuth
+    - Token-based
+
+HTTP Basic authentication
 
 Token-based
 Another method of verifying users is by creating a string of characters, or a "token", by the server which is then kept on the client for use in authorization later. The token has the advantage of being able to securely store and keep track of additional data, such as expiration date. The use of asymmetrical encryption can ensure that multiple parties are capable of verifying that the token is valid and the user is actually who they say they are, while only granting the capability of actually creating and correctly signing the token to a single entity. It has the additonal advantage of benig stateless; after the token has been created it does not rely on the state of any particular service to be used.
@@ -54,11 +56,17 @@ This chapter will also discuss where and with what technology passwords and/or o
 During this research, different sources will be consulted to bring us closer to the answer to the question above.
 These will be referenced at the end of the chapter.
 
-Different approaches
+Different approaches (database setup)
+
 
 Location and technology of storage
+    - Local server
+    - Hosted Database
+    - Others
 
-Database security
+Database security (how passwords are stored)
+    - hash
+    - 
 
 Data segmentation & seperation
 
