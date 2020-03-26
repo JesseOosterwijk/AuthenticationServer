@@ -1,0 +1,50 @@
+Project tasks
+1. Database set-up (3x) (mysql)
+2. Create users databases
+3. Connection with authentication server
+4. Data access with ORM
+5. Implementation token authentication
+6. Network setup
+7. Security testing
+8. Argon2 authentication
+9. IDS setup
+10. IDS implementation
+11. IPS setup
+12. IPS implementation
+13. Firewall DMZ setup
+14. DMZ setup
+15. Firewall DB setup
+16. DB network setup
+17. DB network implementation
+18. API setup
+19. DB fallback
+
+Sprint 1:
+Database set-up
+API setup
+Data access with ORM
+Implementation token authentication
+Argon2 Hash authentication implementation
+Create users databases
+
+Sprint 2:
+Network setup
+DMZ setup
+DB network setup
+DB network implementation
+DMZ network implementation
+Firewall DMZ
+
+Sprint 3:
+Firewall DB setup
+IPS setup
+IDS setup
+IDS expansion
+DB fallback
+
+Sprint 4:
+Security testing
+IPS expansion
+Refactoring + bugfixing
+Polishing
+(Performance issues)
