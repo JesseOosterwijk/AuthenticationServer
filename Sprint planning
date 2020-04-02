@@ -19,7 +19,7 @@ Project tasks
 18. API setup
 19. DB fallback
 
-Sprint 1:
+Sprint 2:
 Database set-up
 API setup
 Data access with ORM
@@ -27,7 +27,7 @@ Implementation token authentication
 Argon2 Hash authentication implementation
 Create users databases
 
-Sprint 2:
+Sprint 3:
 Network setup
 DMZ setup
 DB network setup
@@ -35,14 +35,14 @@ DB network implementation
 DMZ network implementation
 Firewall DMZ
 
-Sprint 3:
+Sprint 4:
 Firewall DB setup
 IPS setup
 IDS setup
 IDS expansion
 DB fallback
 
-Sprint 4:
+Sprint 5:
 Security testing
 IPS expansion
 Refactoring + bugfixing

@@ -200,7 +200,22 @@ The main reason that led to this decision is Argon2's ability to protect against
 based attacks, and it's resiliency to dictionary attacks.
 
 ---------------------------------------------------------------------------------------------------------------------------
-Question 5: Jesse Oosterwijk   
+Question 5:
+
+This chapter will mainly be answered by other questions above and pre-existing knowledge, based on deliverables. 
+As mentioned before, we want to deliver a secure authentication server with databases. As you can see above, we have made
+the decision to set up three different databases. This is done to make it useless to gain access to one of these databases.
+One has to gain access to multiple databases to make the information useful.
+
+Furthermore we have, of course, an authentication server. This authentication server has to be accessed through the internet,
+but has to be seperated from the actual databases we use for hashes, salts and other information. This is done to make the
+authentication server accessible, while keeping the database secure. Our database diagram will look like this:
+
+As we cannot copy an image into a plain text file, I have seperately uploaded our database diagram png.
+
+As you can see above, we will make use of two different firewalls. One firewall is a gateway between the internet and our
+authentication server, and the other is the firewall between the server and our databases.
+
 
 What is the most secure way to segment the infrastructure of the authentication mechanism?
 ---------------------------------------------------------------------------------------------------------------------------
