@@ -23,7 +23,15 @@ namespace DataAccess.Repositories
 
         public async Task<UserDto> GetUser(string email, string password)
         {
-            throw new NotImplementedException();
+            return await Task.Run(() =>
+            {
+                return new UserDto()
+                {
+                    Email = "testmakker@email.com",
+                    Id = "5",
+                    Password = "VeiligWachtwoord"
+                };
+            });
         }
     }
 }

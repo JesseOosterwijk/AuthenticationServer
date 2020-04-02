@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Service;
@@ -8,30 +9,55 @@ namespace CyberAuthenticationAPI.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private IUserService userService;
+        private readonly IUserService _userService;
         
         public UserController(IUserService userService)
         {
-            this.userService = userService;
+            this._userService = userService;
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult>Login()
+        public async Task<IActionResult> Login([FromBody]LoginRequest request)
         {
-            return Ok("Heb nou eens effe geduld");
-            
+            try
+            {
+                return Ok(await this._userService.Login(request.Email, request.Password));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Doe eens ff normaal");
+            }
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register()
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            return Ok("Heb nou eens effe geduld");
+            try
+            {
+                this._userService.AddUser(request.Email, request.Password);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Fuck off");
+            }
+
+           
         }
 
         [HttpPost("delete")]
         public async Task<IActionResult> Delete()
         {
-            return Ok("Heb nou eens effe geduld");
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Wat is AVG?");
+            }
+            
+           
         }
      }
 }

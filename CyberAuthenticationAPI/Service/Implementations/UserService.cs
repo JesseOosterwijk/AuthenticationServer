@@ -7,36 +7,37 @@ namespace Service
 {
     public class UserService : IUserService
     {
-        private readonly IEncryptionService encryptService;
-        private readonly IUserRepository userRepo;
-        private readonly ITokenService tokenService;
+        private readonly IEncryptionService _encryptService;
+        private readonly IUserRepository _userRepo;
+        private readonly ITokenService _tokenService;
         
         public UserService(IEncryptionService encryptService, IUserRepository userRepo, ITokenService tokenService)
         {
-            this.encryptService = encryptService;
-            this.userRepo = userRepo;
+            this._encryptService = encryptService;
+            this._userRepo = userRepo;
+            this._tokenService = tokenService;
         }
 
         public async void AddUser(string email, string password)
         {
-            Task<string> hashedPasswordTask = encryptService.HashAsync(password);
+            Task<string> hashedPasswordTask = _encryptService.HashAsync(password);
             
             Guid userId = Guid.NewGuid();
             
-            userRepo.InsertUser(userId.ToString(), email, await hashedPasswordTask);
+            _userRepo.InsertUser(userId.ToString(), email, await hashedPasswordTask);
         }
 
         public async void DeleteUser(string userId)
         {
-            userRepo.DeleteUser(userId);
+            _userRepo.DeleteUser(userId);
         }
 
         public async Task<string> Login(string email, string password)
         {
-            Task<string> hashTask = encryptService.HashAsync(password);
-            Task<UserDto> userTask = userRepo.GetUser(email, await hashTask);
+            Task<string> hashTask = _encryptService.HashAsync(password);
+            Task<UserDto> userTask = _userRepo.GetUser(email, await hashTask);
 
-            return tokenService.GenerateToken(await userTask);
+            return _tokenService.GenerateToken(await userTask);
         }
     }
 }

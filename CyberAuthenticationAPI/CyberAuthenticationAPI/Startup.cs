@@ -32,9 +32,9 @@ namespace CyberAuthenticationAPI
             services.AddSingleton<IKeyRepository, KeyRepository>();
             services.AddSingleton<ISaltRepository, SaltMine>();
             
-            services.AddSingleton<ITokenService, JwtTokenService>();
+            services.AddSingleton<ITokenService, JwtTokenService>(sc => new JwtTokenService("Super veilig geheimpje"));
             //Deze waardes zouden fout kunnen zijn
-            services.AddSingleton<IEncryptionService, Argon2Service>(s => new Argon2Service(10000, 4, 2048));
+            services.AddSingleton<IEncryptionService, Argon2Service>(s => new Argon2Service(100, 4, 8192));
             services.AddSingleton<IUserService, UserService>();
             
             services.AddControllers();

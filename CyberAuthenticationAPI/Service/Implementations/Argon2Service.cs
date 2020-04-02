@@ -20,6 +20,10 @@ namespace Service
             this.hashIterations = hashIterations;
             this.parallelism = parallelism;
             this.saltLength = saltLength;
+            this.memorySize = memorySze;
+            this.pepper = pepper;
+            this.hashLength = length;
+            
         }
         
         public async Task<string> HashAsync(string str)
