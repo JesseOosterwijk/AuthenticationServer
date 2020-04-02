@@ -5,4 +5,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.0.30" />
+      <PackageReference Include="MySQL.Data.Entities" Version="6.8.3" />
+    </ItemGroup>
+
 </Project>

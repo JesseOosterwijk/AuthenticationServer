@@ -2,49 +2,55 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Konscious.Security.Cryptography;
+using Service.Interfaces;
 
-namespace Service
+namespace Service.Implementations
 {
     //https://github.com/kmaragon/Konscious.Security.Cryptography
     public class Argon2Service : IEncryptionService
     {
-        private readonly int hashIterations;
-        private readonly int parallelism;
-        private readonly int saltLength;
-        private readonly int memorySize;
-        private byte[]? pepper;
-        private int hashLength;
+        private readonly int _hashIterations;
+        private readonly int _parallelism;
+        private readonly int _saltLength;
+        private readonly int _memorySize;
+        private byte[]? _pepper;
+        private int _hashLength;
         
         public Argon2Service(int hashIterations, int parallelism, int memorySze, int saltLength = 32, byte[]? pepper = null, int length = 128)
         {
-            this.hashIterations = hashIterations;
-            this.parallelism = parallelism;
-            this.saltLength = saltLength;
-            this.memorySize = memorySze;
-            this.pepper = pepper;
-            this.hashLength = length;
+            this._hashIterations = hashIterations;
+            this._parallelism = parallelism;
+            this._saltLength = saltLength;
+            this._memorySize = memorySze;
+            this._pepper = pepper;
+            this._hashLength = length;
             
         }
-        
-        public async Task<string> HashAsync(string str)
-        {
-            Argon2i argon2 = new Argon2i(Encoding.UTF8.GetBytes(str));
-            byte[] salt = new byte[saltLength];
 
+        public Task<string> HashAsync(string str, out byte[] salt)
+        {
+            byte[] generatedSalt = new byte[_saltLength];
+            salt = generatedSalt;
             using RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
             random.GetNonZeroBytes(salt);
+            return HashAsync(str, generatedSalt);
+        }
+        
+        public async Task<string> HashAsync(string str, byte[] salt)
+        {
+            Argon2i argon2 = new Argon2i(Encoding.UTF8.GetBytes(str));
 
             argon2.Salt = salt;
-            argon2.DegreeOfParallelism = parallelism;
-            argon2.Iterations = hashIterations;
-            argon2.MemorySize = memorySize;
+            argon2.DegreeOfParallelism = _parallelism;
+            argon2.Iterations = _hashIterations;
+            argon2.MemorySize = _memorySize;
 
-            if (pepper != null)
+            if (_pepper != null)
             {
-                argon2.AssociatedData = pepper;
+                argon2.AssociatedData = _pepper;
             }
             
-            return Encoding.UTF8.GetString(await argon2.GetBytesAsync(hashLength));
+            return Encoding.UTF8.GetString(await argon2.GetBytesAsync(_hashLength));
         }
     }
 }

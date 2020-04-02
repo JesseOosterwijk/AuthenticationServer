@@ -1,6 +1,6 @@
 using DataAccess;
 
-namespace Service
+namespace Service.Interfaces
 {
     public interface ITokenService
     {

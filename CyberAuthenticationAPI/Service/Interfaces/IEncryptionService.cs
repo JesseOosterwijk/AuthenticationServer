@@ -1,9 +1,10 @@
 using System.Threading.Tasks;
 
-namespace Service
+namespace Service.Interfaces
 {
     public interface IEncryptionService
     {
-        Task<string> HashAsync(string str);
+        Task<string> HashAsync(string str, byte[] salt);
+        Task<string> HashAsync(string str, out byte[] salt);
     }
 }

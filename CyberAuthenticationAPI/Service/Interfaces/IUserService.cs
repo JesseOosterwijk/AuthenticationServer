@@ -1,10 +1,11 @@
 using System.Threading.Tasks;
 
-namespace Service
+namespace Service.Interfaces
 {
     public interface IUserService
     {
-        public void AddUser(string email, string password);
+        void AddUser(string email, string password);
         Task<string> Login(string email, string password);
+        void DeleteUser(string userId, string password);
     }
 }

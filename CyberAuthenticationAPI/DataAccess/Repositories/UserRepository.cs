@@ -1,37 +1,45 @@
 using System;
+using System.Data.Common;
 using System.Threading.Tasks;
+using Dapper;
 using DataAccess.Interfaces;
+using MySql.Data.MySqlClient;
 
 namespace DataAccess.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        public async void InsertUser(string userId, string email, string password)
+        private readonly DbConnection conn;
+        public UserRepository(DbConnection conn)
         {
-            throw new System.NotImplementedException();
+            this.conn = conn;
+        }
+        
+        public async Task<int> InsertUser(string userId, string email, string password)
+        {
+            return await conn.ExecuteAsync("INSERT INTO User(Id, Email, Password) VALUES(@userId, @email, @password)",
+                new {userId, email, password});
         }
 
-        public async void DeleteUser(string userId)
+        public async Task<int> DeleteUser(string userId)
         {
-            throw new NotImplementedException();
+            return await conn.ExecuteAsync("DELETE FROM USER WHERE Id = @id", new {id = userId});
         }
 
-        public async void UpdateUser(string userId, string? email, string? password)
+        public async Task<int> UpdateUser(string userId, string? email, string? password)
         {
-            throw new NotImplementedException();
+            string sql = (email == null) ? "Update USER SET Email = @email WHERE Id = @userId" : "Update USER SET Password = @password WHERE Id = @userId";
+            return await conn.ExecuteAsync(sql, new {userId, password, email});
         }
 
         public async Task<UserDto> GetUser(string email, string password)
         {
-            return await Task.Run(() =>
-            {
-                return new UserDto()
-                {
-                    Email = "testmakker@email.com",
-                    Id = "5",
-                    Password = "VeiligWachtwoord"
-                };
-            });
+            return await conn.QuerySingleAsync<UserDto>("SELECT * FROM User WHERE Email = @email AND Password = @password", new {email, password});
+        }
+        
+        public async Task<UserDto> GetUser(string userId)
+        {
+            return await conn.QuerySingleAsync<UserDto>("SELECT * FROM User WHERE UserId = @userId", new {userId});
         }
     }
 }

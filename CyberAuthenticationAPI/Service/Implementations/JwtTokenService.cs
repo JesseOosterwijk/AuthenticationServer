@@ -2,11 +2,11 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using DataAccess;
 using Microsoft.IdentityModel.Tokens;
+using Service.Interfaces;
 
-namespace Service
+namespace Service.Implementations
 {
     public class JwtTokenService : ITokenService
     {
@@ -21,10 +21,7 @@ namespace Service
         {
             byte[] symmetricKey = Convert.FromBase64String(secret);
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-
             DateTime now = DateTime.UtcNow;
-            
-            
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]

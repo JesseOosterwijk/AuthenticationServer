@@ -4,9 +4,9 @@ namespace DataAccess.Interfaces
 {
     public interface ISaltRepository
     {
-        void InsertSalt(string userId, byte[] salt);
-        void DeleteSalt(string userId);
-        void UpdateSalt(string userId, byte[] salt);
+        Task<int> InsertSalt(string userId, byte[] salt);
+        Task<int> DeleteSalt(string userId);
+        Task<int> UpdateSalt(string userId, byte[] salt);
         Task<string> GetSalt(string userId);
     }
 }
