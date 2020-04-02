@@ -1,0 +1,20 @@
+wat gaan we loggen en wat monitoren we?
+hoe en waar slaan we logs op?
+pull/poll, push, hybrid
+SNMP/STMP?
+normalisatie
+alerts
+
+Op letten:
+hoeveel log je
+log file truncation (limiting number of digits)
+cyclic log files
+time sync
+access to logging
+log levels
+
+verkeerde pogingen
+breaches
+errors
+database connection
+wrong session token
