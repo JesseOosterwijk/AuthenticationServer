@@ -1,9 +1,11 @@
+
+
 Context
  
- Nowadays, many applications handle personal info. To prevent unauthorised access to this personal info, most business make use of an authentication system.
- Larger business often opt to identify users based on a 'token', which has the advantage of being stateless, and being reusable for other web services.
- The entire process of entering credentials, receiving a token in return, and holding on to it carries some security concerns. 
- As part of this research, we will attempt to answer some questions related to these concerns. Our main research question is thus as follows:
+Nowadays, many applications handle personal info. To prevent unauthorised access to this personal info, most business make use of an authentication system.
+Larger business often opt to identify users based on a 'token', which has the advantage of being stateless, and being reusable for other web services.
+The entire process of entering credentials, receiving a token in return, and holding on to it carries some security concerns. 
+As part of this research, we will attempt to answer some questions related to these concerns. Our main research question is thus as follows:
  
 How can we develop and implement a secure authentication mechanism for an application service?
 
