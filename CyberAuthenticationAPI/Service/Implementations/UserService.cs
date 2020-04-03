@@ -34,7 +34,7 @@ namespace Service.Implementations
             await _saltRepo.InsertSalt(userId, salt);
         }
 
-        public async void DeleteUser(string userId, string password)
+        public async Task DeleteUser(string userId, string password)
         {
 
             UserDto user = await _userRepo.GetUser(userId);
@@ -53,7 +53,7 @@ namespace Service.Implementations
         public async Task<string> Login(string email, string password)
         {
             UserDto user = await _userRepo.GetUser(email);
-           byte[] salt = await _saltRepo.GetSalt(user.Id);
+            byte[] salt = await _saltRepo.GetSalt(user.Id);
             Task<string> hashTask = _encryptService.HashAsync(password, salt);
 
             if ((await hashTask).SequenceEqual((user.Password)))

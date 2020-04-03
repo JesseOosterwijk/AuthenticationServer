@@ -11,9 +11,9 @@ namespace Service.Implementations
     public class JwtTokenService : ITokenService
     {
         private IEncryptionService _encryptionService;
-        public JwtTokenService()
+        public JwtTokenService(IEncryptionService encryptionService)
         {
-            
+            _encryptionService = encryptionService;
         }
         
         

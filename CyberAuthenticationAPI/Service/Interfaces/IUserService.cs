@@ -6,6 +6,6 @@ namespace Service.Interfaces
     {
         Task AddUser(string email, string password);
         Task<string> Login(string email, string password);
-        void DeleteUser(string userId, string password);
+        Task DeleteUser(string userId, string password);
     }
 }

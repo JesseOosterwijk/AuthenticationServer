@@ -1,10 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CyberAuthenticationAPI", "CyberAuthenticationAPI\CyberAuthenticationAPI.csproj", "{1E00D6D6-1DA1-4EF0-9A22-858636AEB1D7}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CyberAuthenticationAPI", "CyberAuthenticationAPI\CyberAuthenticationAPI.csproj", "{1E00D6D6-1DA1-4EF0-9A22-858636AEB1D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{CB247128-A64E-4C11-BAC4-B85D8C682C3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{CB247128-A64E-4C11-BAC4-B85D8C682C3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{B2391C89-9F24-4210-9299-11A99845CF47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{B2391C89-9F24-4210-9299-11A99845CF47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{0DA43CF4-54DA-49B6-AA6E-5EAC5A68F88A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +29,15 @@ Global
 		{B2391C89-9F24-4210-9299-11A99845CF47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2391C89-9F24-4210-9299-11A99845CF47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2391C89-9F24-4210-9299-11A99845CF47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DA43CF4-54DA-49B6-AA6E-5EAC5A68F88A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DA43CF4-54DA-49B6-AA6E-5EAC5A68F88A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DA43CF4-54DA-49B6-AA6E-5EAC5A68F88A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DA43CF4-54DA-49B6-AA6E-5EAC5A68F88A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {817C9481-EBE2-4971-A4F5-A9D08E6919C4}
 	EndGlobalSection
 EndGlobal
