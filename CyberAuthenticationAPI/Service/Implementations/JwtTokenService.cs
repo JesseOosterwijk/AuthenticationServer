@@ -10,18 +10,18 @@ namespace Service.Implementations
 {
     public class JwtTokenService : ITokenService
     {
-        private readonly string secret;
-        public JwtTokenService(string secret)
+        private IEncryptionService _encryptionService;
+        public JwtTokenService()
         {
-            this.secret = secret;
+            
         }
         
         
         public string GenerateToken(UserDto user)
         {
-            byte[] symmetricKey = Convert.FromBase64String(secret);
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             DateTime now = DateTime.UtcNow;
+            
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +11,12 @@ namespace Service.Implementations
 {
     public class UserService : IUserService
     {
-        private readonly IEncryptionService _encryptService;
+        private readonly IHashService _encryptService;
         private readonly IUserRepository _userRepo;
         private readonly ITokenService _tokenService;
         private readonly ISaltRepository _saltRepo;
         
-        public UserService(IEncryptionService encryptService, IUserRepository userRepo, ITokenService tokenService, ISaltRepository saltRepo)
+        public UserService(IHashService encryptService, IUserRepository userRepo, ITokenService tokenService, ISaltRepository saltRepo)
         {
             this._encryptService = encryptService;
             this._userRepo = userRepo;
@@ -23,7 +24,7 @@ namespace Service.Implementations
             this._saltRepo = saltRepo;
         }
 
-        public async void AddUser(string email, string password)
+        public async Task AddUser(string email, string password)
         {
             Task<string> hashedPasswordTask = _encryptService.HashAsync(password, out byte[] salt);
             
@@ -37,8 +38,8 @@ namespace Service.Implementations
         {
 
             UserDto user = await _userRepo.GetUser(userId);
-            string salt = await _saltRepo.GetSalt(userId);
-            if (user.Password == await _encryptService.HashAsync(password, Encoding.UTF8.GetBytes(salt)))
+            byte[] salt = await _saltRepo.GetSalt(userId);
+            if (user.Password.SequenceEqual(await _encryptService.HashAsync(password, salt)))
             {
                 await _userRepo.DeleteUser(userId);
                 await _saltRepo.DeleteSalt(userId);
@@ -51,11 +52,16 @@ namespace Service.Implementations
 
         public async Task<string> Login(string email, string password)
         {
-            Task<string> hashTask = _encryptService.HashAsync(password, out byte[] salt);
-            
-            Task<UserDto> userTask = _userRepo.GetUser(email, await hashTask);
+            UserDto user = await _userRepo.GetUser(email);
+           byte[] salt = await _saltRepo.GetSalt(user.Id);
+            Task<string> hashTask = _encryptService.HashAsync(password, salt);
 
-            return _tokenService.GenerateToken(await userTask);
+            if ((await hashTask).SequenceEqual((user.Password)))
+            {
+                return _tokenService.GenerateToken(user);
+            }
+           
+            throw new AuthenticationException();
         }
     }
 }

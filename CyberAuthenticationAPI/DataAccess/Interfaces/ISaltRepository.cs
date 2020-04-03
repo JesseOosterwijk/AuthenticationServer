@@ -7,6 +7,6 @@ namespace DataAccess.Interfaces
         Task<int> InsertSalt(string userId, byte[] salt);
         Task<int> DeleteSalt(string userId);
         Task<int> UpdateSalt(string userId, byte[] salt);
-        Task<string> GetSalt(string userId);
+        Task<byte[]> GetSalt(string userId);
     }
 }

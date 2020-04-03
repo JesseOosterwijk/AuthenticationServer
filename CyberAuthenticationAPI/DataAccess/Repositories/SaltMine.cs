@@ -7,30 +7,35 @@ namespace DataAccess.Repositories
 {
     public class SaltMine : ISaltRepository
     {
-        private readonly DbConnection conn;
+        private readonly DbConnection _conn;
         public SaltMine(DbConnection conn)
         {
-            this.conn = conn;
+            this._conn = conn;
         }
         
         public async Task<int> InsertSalt(string userId, byte[] salt)
         {
-            return await conn.ExecuteAsync("INSERT INTO Salt(UserId, Salt) VALUES(@userId, salt)", new {userId, salt});
+            return await _conn.ExecuteAsync("INSERT INTO Salt(Id, Salt) VALUES(@userId, @salt)", new {userId, salt});
         }
 
         public async Task<int> DeleteSalt(string userId)
         {
-            return await conn.ExecuteAsync("DELETE FROM Salt WHERE UserId = @userId", new {userId});
+            return await _conn.ExecuteAsync("DELETE FROM Salt WHERE Id = @userId", new {userId});
         }
 
         public async Task<int> UpdateSalt(string userId, byte[] salt)
         {
-            return await conn.ExecuteAsync("UPDATE Salt SET Salt = @salt WHERE UserId = @userId", new {userId, salt});
+            return await _conn.ExecuteAsync("UPDATE Salt SET Salt = @salt WHERE Id = @userId", new {userId, salt});
         }
 
-        public async Task<string> GetSalt(string userId)
+        public async Task<byte[]> GetSalt(string userId)
         {
-            return await conn.QueryFirstAsync<string>("SELECT Salt FROM Salt WHERE UserId = @userId", new {userId});
+            return (await _conn.QueryFirstAsync<SaltDto>("SELECT Salt FROM Salt WHERE Id = @userId", new {userId})).Salt;
         }
+    }
+
+    class SaltDto
+    {
+        public byte[] Salt { get; set; }
     }
 }

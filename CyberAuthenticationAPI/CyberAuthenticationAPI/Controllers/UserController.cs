@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Service;
+using Microsoft.Extensions.Logging;
 using Service.Interfaces;
 
 namespace CyberAuthenticationAPI.Controllers
@@ -11,10 +11,12 @@ namespace CyberAuthenticationAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ILogger<UserController> _logger;
         
-        public UserController(IUserService userService)
+        public UserController(ILogger<UserController> logger, IUserService userService)
         {
             this._userService = userService;
+            this._logger = logger;
         }
 
         [HttpPost("login")]
@@ -26,6 +28,7 @@ namespace CyberAuthenticationAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error logging in");
                 return BadRequest("Doe eens ff normaal");
             }
         }
@@ -35,15 +38,14 @@ namespace CyberAuthenticationAPI.Controllers
         {
             try
             {
-                this._userService.AddUser(request.Email, request.Password);
+                await this._userService.AddUser(request.Email, request.Password);
                 return Ok();
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error registering");
                 return BadRequest("Fuck off");
             }
-
-           
         }
 
         [HttpPost("delete")]
@@ -57,8 +59,6 @@ namespace CyberAuthenticationAPI.Controllers
             {
                 return BadRequest("Wat is AVG?");
             }
-            
-           
         }
      }
 }

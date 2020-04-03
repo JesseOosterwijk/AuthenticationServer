@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Interfaces;
 using DataAccess.Repositories;
@@ -32,13 +33,19 @@ namespace CyberAuthenticationAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IUserRepository, UserRepository>(s => new UserRepository(new MySqlConnection("Wordt later ingevuld")));
-            services.AddSingleton<IKeyRepository, KeyRepository>(s => new KeyRepository(new MySqlConnection("Wordt later ingevuld")));
-            services.AddSingleton<ISaltRepository, SaltMine>(s => new SaltMine(new MySqlConnection("Wordt later ingevuld")));
+            EncodingProvider ppp = CodePagesEncodingProvider.Instance;
+            Encoding.RegisterProvider(ppp);
+            
+            services.AddSingleton<IUserRepository, UserRepository>(s => new UserRepository(
+            new MySqlConnection("Server=116.203.194.69; Port=3306; Database=UserDB;Uid=userdb;Pwd=KNnJsvRAUSyWyfAAbuLsibkM5gkzZ736;")));
+            services.AddSingleton<IKeyRepository, KeyRepository>(s => new KeyRepository(
+                new MySqlConnection("Server=116.203.194.69; Port=3306; Database=KeyDB;Uid=keydb;Pwd=A64jDnpjJzdzV3WgFDbzt4jDXHDtoYwD;")));
+            services.AddSingleton<ISaltRepository, SaltMine>(s => new SaltMine(
+                new MySqlConnection("Server=116.203.194.69; Port=3306; Database=SaltDB;Uid=saltdb;Pwd=7mRB5p7WTkpcDnirFDQ9RWrZseH4C74M;")));
 
-            services.AddSingleton<ITokenService, JwtTokenService>(sc => new JwtTokenService("Super veilig geheimpje"));
+            services.AddSingleton<ITokenService, JwtTokenService>();
             //Deze waardes zouden fout kunnen zijn
-            services.AddSingleton<IEncryptionService, Argon2Service>(s => new Argon2Service(100, 4, 8192));
+            services.AddSingleton<IHashService, Argon2Service>(s => new Argon2Service(100, 4, 8192));
             services.AddSingleton<IUserService, UserService>();
             
             services.AddControllers();

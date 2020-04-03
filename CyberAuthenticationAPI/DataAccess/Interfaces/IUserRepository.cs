@@ -9,6 +9,6 @@ namespace DataAccess.Interfaces
         Task<int> DeleteUser(string userId);
         Task<int> UpdateUser(string userId, string? email, string? password);
         Task<UserDto> GetUser(string email, string password);
-        Task<UserDto> GetUser(string userId);
+        Task<UserDto> GetUser(string email);
     }
 }

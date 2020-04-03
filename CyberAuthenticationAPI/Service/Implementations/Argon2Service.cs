@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,16 +9,17 @@ using Service.Interfaces;
 namespace Service.Implementations
 {
     //https://github.com/kmaragon/Konscious.Security.Cryptography
-    public class Argon2Service : IEncryptionService
+    public class Argon2Service : IHashService
     {
         private readonly int _hashIterations;
         private readonly int _parallelism;
         private readonly int _saltLength;
         private readonly int _memorySize;
-        private byte[]? _pepper;
-        private int _hashLength;
-        
-        public Argon2Service(int hashIterations, int parallelism, int memorySze, int saltLength = 32, byte[]? pepper = null, int length = 128)
+        private readonly byte[]? _pepper;
+        private readonly int _hashLength;
+
+        public Argon2Service(int hashIterations, int parallelism, int memorySze, int saltLength = 32,
+            byte[]? pepper = null, int length = 128)
         {
             this._hashIterations = hashIterations;
             this._parallelism = parallelism;
@@ -24,7 +27,6 @@ namespace Service.Implementations
             this._memorySize = memorySze;
             this._pepper = pepper;
             this._hashLength = length;
-            
         }
 
         public Task<string> HashAsync(string str, out byte[] salt)
@@ -35,7 +37,7 @@ namespace Service.Implementations
             random.GetNonZeroBytes(salt);
             return HashAsync(str, generatedSalt);
         }
-        
+
         public async Task<string> HashAsync(string str, byte[] salt)
         {
             Argon2i argon2 = new Argon2i(Encoding.UTF8.GetBytes(str));
@@ -49,8 +51,9 @@ namespace Service.Implementations
             {
                 argon2.AssociatedData = _pepper;
             }
-            
-            return Encoding.UTF8.GetString(await argon2.GetBytesAsync(_hashLength));
+
+            string hashedPass = Encoding.ASCII.GetString(await argon2.GetBytesAsync(_hashLength));
+            return hashedPass;
         }
     }
 }

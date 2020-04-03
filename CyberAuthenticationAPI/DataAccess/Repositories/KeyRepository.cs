@@ -5,10 +5,10 @@ namespace DataAccess.Repositories
 {
     public class KeyRepository : IKeyRepository
     {
-        private readonly DbConnection conn;
+        private readonly DbConnection _conn;
         public KeyRepository(DbConnection conn)
         {
-            this.conn = conn;
+            this._conn = conn;
         }
     }
 }
