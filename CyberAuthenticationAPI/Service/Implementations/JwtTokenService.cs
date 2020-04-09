@@ -2,6 +2,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using DataAccess;
 using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
@@ -11,9 +12,13 @@ namespace Service.Implementations
     public class JwtTokenService : ITokenService
     {
         private IEncryptionService _encryptionService;
+        private SecurityKey _securityKey;
+
         public JwtTokenService(IEncryptionService encryptionService)
         {
             _encryptionService = encryptionService;
+            _securityKey = new AsymmetricSignatureProvider(
+                       new RsaSecurityKey(RSA.Create(2048)), SecurityAlgorithms.RsaSha512).Key;
         }
         
         
@@ -32,18 +37,37 @@ namespace Service.Implementations
 
                 Expires = now.AddMinutes(2),
                 
-                SigningCredentials = new SigningCredentials(
-                    new AsymmetricSignatureProvider(
-                        new RsaSecurityKey(RSA.Create(2048)), SecurityAlgorithms.RsaSha512).Key, SecurityAlgorithms.RsaSha512),
+                SigningCredentials = new SigningCredentials(_securityKey, SecurityAlgorithms.RsaSha512),
             };
 
             SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(securityToken);
         }
 
-        public string VerifyToken(string token)
+        public bool VerifyToken(string token)
         {
-            throw new NotImplementedException();
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters()
+            {
+                ValidateLifetime = true,
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidIssuer = "CyberB",
+                ValidAudience = "User",
+                IssuerSigningKey = _securityKey
+            };
+
+            try
+            {
+                IPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
         }
+
     }
 }
