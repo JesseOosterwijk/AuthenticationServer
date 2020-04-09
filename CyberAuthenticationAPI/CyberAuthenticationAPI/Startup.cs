@@ -44,6 +44,7 @@ namespace CyberAuthenticationAPI
                 new MySqlConnection("Server=116.203.194.69; Port=3306; Database=SaltDB;Uid=saltdb;Pwd=7mRB5p7WTkpcDnirFDQ9RWrZseH4C74M;")));
 
             services.AddSingleton<ITokenService, JwtTokenService>();
+            services.AddSingleton<IEncryptionService, RsaEncryptionService>();
             //Deze waardes zouden fout kunnen zijn
             services.AddSingleton<IHashService, Argon2Service>(s => new Argon2Service(100, 4, 8192));
             services.AddSingleton<IUserService, UserService>();

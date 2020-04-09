@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Security.Principal;
+using System.Threading;
 using DataAccess;
 using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
@@ -44,14 +45,14 @@ namespace Service.Implementations
             return tokenHandler.WriteToken(securityToken);
         }
 
-        public bool VerifyToken(string token)
+        public bool VerifyToken(string token)   //TODO: Validate Audience and Validate issuer of token
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             var validationParameters = new TokenValidationParameters()
             {
                 ValidateLifetime = true,
-                ValidateAudience = true,
-                ValidateIssuer = true,
+                ValidateAudience = false,
+                ValidateIssuer = false,
                 ValidIssuer = "CyberB",
                 ValidAudience = "User",
                 IssuerSigningKey = _securityKey
@@ -62,9 +63,9 @@ namespace Service.Implementations
                 IPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                throw e;
             }
             
         }

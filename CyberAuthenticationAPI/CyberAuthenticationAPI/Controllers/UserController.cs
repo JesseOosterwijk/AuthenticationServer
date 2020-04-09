@@ -1,5 +1,7 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
+using CyberAuthenticationAPI.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Service.Interfaces;
@@ -12,11 +14,13 @@ namespace CyberAuthenticationAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly ILogger<UserController> _logger;
+        private readonly ITokenService _tokenService;
         
-        public UserController(ILogger<UserController> logger, IUserService userService)
+        public UserController(ILogger<UserController> logger, IUserService userService, ITokenService tokenService)
         {
             this._userService = userService;
             this._logger = logger;
+            this._tokenService = tokenService;
         }
 
         [HttpPost("login")]
@@ -58,6 +62,21 @@ namespace CyberAuthenticationAPI.Controllers
             catch (Exception ex)
             {
                 return BadRequest("Wat is AVG?");
+            }
+        }
+
+        [HttpPost("verify")]
+        public async Task<IActionResult> Verify([FromBody]VerifyRequest token)
+        {
+            try
+            {
+                this._tokenService.VerifyToken(token.Token);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                return BadRequest("oprotten kutaziaat");
             }
         }
      }
