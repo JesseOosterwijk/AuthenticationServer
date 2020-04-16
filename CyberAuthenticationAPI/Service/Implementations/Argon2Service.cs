@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,13 +16,13 @@ namespace Service.Implementations
         private readonly byte[]? _pepper;
         private readonly int _hashLength;
 
-        public Argon2Service(int hashIterations, int parallelism, int memorySze, int saltLength = 32,
+        public Argon2Service(int hashIterations, int parallelism, int memorySize, int saltLength = 32,
             byte[]? pepper = null, int length = 128)
         {
             this._hashIterations = hashIterations;
             this._parallelism = parallelism;
             this._saltLength = saltLength;
-            this._memorySize = memorySze;
+            this._memorySize = memorySize;
             this._pepper = pepper;
             this._hashLength = length;
         }

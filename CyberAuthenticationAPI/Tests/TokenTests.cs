@@ -4,15 +4,17 @@ using Service.Implementations;
 using Service.Interfaces;
 using DataAccess;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Linq;
 using System;
+using System.Threading.Tasks;
+using DataAccess.Interfaces;
 
 namespace Tests
 {
     public class TokenTests
     {
         Mock<IEncryptionService> encryptionMock = new Mock<IEncryptionService>();
+        Mock<IKeypairRepository> keypairMock = new Mock<IKeypairRepository>();
         JwtTokenService tokenService;
         UserDto testUser;
 
@@ -20,13 +22,13 @@ namespace Tests
         public void Setup()
         {
             testUser = new UserDto() { Id = "1", Email = "TestMakker@aids.com", Password = "hashedWachtwoord" };
-            tokenService = new JwtTokenService(encryptionMock.Object);
+            tokenService = new JwtTokenService(encryptionMock.Object, keypairMock.Object);
         }
 
         [Test]
-        public void GenerateToken_HasCorrectParameters()
+        public async Task GenerateToken_HasCorrectParameters()
         {
-            string token = tokenService.GenerateToken(testUser);
+            string token = await tokenService.GenerateToken(testUser);
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             JwtSecurityToken secToken = tokenHandler.ReadJwtToken(token);
             var actualEmail = secToken.Claims.FirstOrDefault(c => c.Value == testUser.Email );
@@ -36,9 +38,9 @@ namespace Tests
         }
 
         [Test]
-        public void VerifyToken_ReturnsTrue_IfTokenIsValid()
+        public async Task VerifyToken_ReturnsTrue_IfTokenIsValid()
         {
-            string token = tokenService.GenerateToken(testUser);
+            string token = await tokenService.GenerateToken(testUser);
             bool result = tokenService.VerifyToken(token);
 
             Assert.IsTrue(result);

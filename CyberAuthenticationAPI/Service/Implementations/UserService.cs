@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
-using System.Text;
 using System.Threading.Tasks;
 using DataAccess;
 using DataAccess.Interfaces;
@@ -11,27 +11,33 @@ namespace Service.Implementations
 {
     public class UserService : IUserService
     {
-        private readonly IHashService _encryptService;
+        private readonly IHashService _hashService;
+        private readonly IEncryptionService _encryptionService;
         private readonly IUserRepository _userRepo;
         private readonly ITokenService _tokenService;
         private readonly ISaltRepository _saltRepo;
+        private readonly IKeypairRepository _keypairRepo;
         
-        public UserService(IHashService encryptService, IUserRepository userRepo, ITokenService tokenService, ISaltRepository saltRepo)
+        public UserService(IHashService hashService, IEncryptionService encryptionService, IUserRepository userRepo, ITokenService tokenService, ISaltRepository saltRepo, IKeypairRepository keypairRepo)
         {
-            this._encryptService = encryptService;
+            this._hashService = hashService;
+            this._encryptionService = encryptionService;
             this._userRepo = userRepo;
             this._tokenService = tokenService;
             this._saltRepo = saltRepo;
+            this._keypairRepo = keypairRepo;
         }
 
         public async Task AddUser(string email, string password)
         {
-            Task<string> hashedPasswordTask = _encryptService.HashAsync(password, out byte[] salt);
+            Task<string> hashedPasswordTask = _hashService.HashAsync(password, out byte[] salt);
             
             string userId = Guid.NewGuid().ToString();
             
             await _userRepo.InsertUser(userId, email, await hashedPasswordTask);
             await _saltRepo.InsertSalt(userId, salt);
+            KeyValuePair<byte[], byte[]> keyPair = await _encryptionService.GenerateKeyPair();
+            await _keypairRepo.InsertKeypair(keyPair, userId);
         }
 
         public async Task DeleteUser(string userId, string password)
@@ -39,10 +45,11 @@ namespace Service.Implementations
 
             UserDto user = await _userRepo.GetUser(userId);
             byte[] salt = await _saltRepo.GetSalt(userId);
-            if (user.Password.SequenceEqual(await _encryptService.HashAsync(password, salt)))
+            if (user.Password.SequenceEqual(await _hashService.HashAsync(password, salt)))
             {
                 await _userRepo.DeleteUser(userId);
                 await _saltRepo.DeleteSalt(userId);
+                await _keypairRepo.DeleteKeypair(userId);
             }
             else
             {
@@ -54,11 +61,11 @@ namespace Service.Implementations
         {
             UserDto user = await _userRepo.GetUser(email);
             byte[] salt = await _saltRepo.GetSalt(user.Id);
-            Task<string> hashTask = _encryptService.HashAsync(password, salt);
+            Task<string> hashTask = _hashService.HashAsync(password, salt);
 
             if ((await hashTask).SequenceEqual((user.Password)))
             {
-                return _tokenService.GenerateToken(user);
+                return await _tokenService.GenerateToken(user);
             }
            
             throw new AuthenticationException();

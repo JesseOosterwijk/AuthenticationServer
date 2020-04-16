@@ -1,10 +1,11 @@
 using DataAccess;
+using System.Threading.Tasks;
 
 namespace Service.Interfaces
 {
     public interface ITokenService
     {
-        public string GenerateToken(UserDto user);
+        public Task<string> GenerateToken(UserDto user);
         bool VerifyToken(string token);
     }
 }

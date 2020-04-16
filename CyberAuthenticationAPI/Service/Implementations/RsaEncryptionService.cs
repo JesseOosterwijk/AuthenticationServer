@@ -7,14 +7,14 @@ namespace Service.Implementations
 {
     public class RsaEncryptionService : IEncryptionService
     {
-        /*public Task<KeyValuePair<string, string>> GenerateKeyPair()
+        public Task<KeyValuePair<byte[], byte[]>> GenerateKeyPair()
         {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-            rsa.ExportRSAPrivateKey();
-        }*/
-        public Task<KeyValuePair<string, string>> GenerateKeyPair()
-        {
-            throw new System.NotImplementedException();
+            return Task.Run(() =>
+            {
+                RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(4096);
+                byte[] publicKey = rsa.ExportRSAPublicKey();
+                byte[] privateKey = rsa.ExportRSAPrivateKey(); return new KeyValuePair<byte[], byte[]>(publicKey, privateKey);
+            });
         }
     }
 }

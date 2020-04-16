@@ -1,9 +1,7 @@
-using System;
 using System.Data.Common;
 using System.Threading.Tasks;
 using Dapper;
 using DataAccess.Interfaces;
-using MySql.Data.MySqlClient;
 
 namespace DataAccess.Repositories
 {

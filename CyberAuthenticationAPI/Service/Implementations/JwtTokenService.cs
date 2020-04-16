@@ -3,8 +3,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Security.Principal;
-using System.Threading;
+using System.Threading.Tasks;
 using DataAccess;
+using DataAccess.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
 
@@ -13,21 +14,23 @@ namespace Service.Implementations
     public class JwtTokenService : ITokenService
     {
         private IEncryptionService _encryptionService;
+        private IKeypairRepository _keypairRepo;
         private SecurityKey _securityKey;
 
-        public JwtTokenService(IEncryptionService encryptionService)
+        public JwtTokenService(IEncryptionService encryptionService, IKeypairRepository keypairRepo)
         {
             _encryptionService = encryptionService;
+            _keypairRepo = keypairRepo;
             _securityKey = new AsymmetricSignatureProvider(
                        new RsaSecurityKey(RSA.Create(2048)), SecurityAlgorithms.RsaSha512).Key;
         }
         
         
-        public string GenerateToken(UserDto user)
+        public async Task<string> GenerateToken(UserDto user)
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             DateTime now = DateTime.UtcNow;
-            
+            KeypairDto keyPair = await _keypairRepo.GetKeypair(user.Id);
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -45,7 +48,7 @@ namespace Service.Implementations
             return tokenHandler.WriteToken(securityToken);
         }
 
-        public bool VerifyToken(string token)   //TODO: Validate Audience and Validate issuer of token
+        public bool VerifyToken(string token)   //TODO: Validate Audience and Validate issuer of token 
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             var validationParameters = new TokenValidationParameters()

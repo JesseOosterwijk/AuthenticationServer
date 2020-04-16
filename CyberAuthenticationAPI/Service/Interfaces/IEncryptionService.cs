@@ -5,7 +5,7 @@ namespace Service.Interfaces
 {
     public interface IEncryptionService
     {
-        public Task<KeyValuePair<string, string>> GenerateKeyPair();
+        public Task<KeyValuePair<byte[], byte[]>> GenerateKeyPair();
         
     }
 }

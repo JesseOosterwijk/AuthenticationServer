@@ -13,8 +13,11 @@ namespace Tests
     {
         Mock<IUserRepository> userMock = new Mock<IUserRepository>();
         Mock<IHashService> hashMock = new Mock<IHashService>();
+        Mock<IEncryptionService> encryptMock = new Mock<IEncryptionService>();
         Mock<ISaltRepository> saltMock = new Mock<ISaltRepository>();
         Mock<ITokenService> tokenMock = new Mock<ITokenService>();
+        Mock<IKeypairRepository> keypairMock = new Mock<IKeypairRepository>();
+
         UserDto testUser;
         UserService userService;
         byte[] salt;
@@ -22,7 +25,7 @@ namespace Tests
         [SetUp]
         public void Setup()
         {
-            userService = new UserService(hashMock.Object, userMock.Object, tokenMock.Object, saltMock.Object);
+            userService = new UserService(hashMock.Object, encryptMock.Object, userMock.Object, tokenMock.Object, saltMock.Object, keypairMock.Object);
             salt = new byte[32];
             testUser = new UserDto() { Id = "1", Email = "TestMakker@aids.com", Password = "hashedWachtwoord" };
             userMock.Setup(x => x.GetUser("TestMakker@aids.com"))
@@ -44,7 +47,7 @@ namespace Tests
                     .Returns(Task.Run(() => "hashedWachtwoord"));
 
             tokenMock.Setup(x => x.GenerateToken(testUser))
-                     .Returns("poggers");
+                     .Returns(Task.Run(() => "poggers"));
         }
 
         [Test]
