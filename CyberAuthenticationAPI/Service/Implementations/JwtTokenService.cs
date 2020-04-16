@@ -14,17 +14,23 @@ namespace Service.Implementations
     {
         private IEncryptionService _encryptionService;
         private SecurityKey _securityKey;
+        private RSAParameters _privKey;
+        private RSAParameters _pubKey;
 
         public JwtTokenService(IEncryptionService encryptionService)
         {
+            RSACryptoServiceProvider provider = new RSACryptoServiceProvider(2048);
+            _privKey = provider.ExportParameters(true);
+            _pubKey = provider.ExportParameters(false);
             _encryptionService = encryptionService;
-            _securityKey = new AsymmetricSignatureProvider(
-                       new RsaSecurityKey(RSA.Create(2048)), SecurityAlgorithms.RsaSha512).Key;
+           // _securityKey = new AsymmetricSignatureProvider(
+           //            new RsaSecurityKey(RSA.Create(2048)), SecurityAlgorithms.RsaSha512).Key;
         }
         
         
         public string GenerateToken(UserDto user)
         {
+            SecurityKey key =  BuildRsaSigningKey(_privKey);
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             DateTime now = DateTime.UtcNow;
             
@@ -38,7 +44,7 @@ namespace Service.Implementations
 
                 Expires = now.AddMinutes(2),
                 
-                SigningCredentials = new SigningCredentials(_securityKey, SecurityAlgorithms.RsaSha512),
+                SigningCredentials =new SigningCredentials(key, SecurityAlgorithms.RsaSha512Signature, SecurityAlgorithms.Sha512Digest),
             };
 
             SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);
@@ -47,6 +53,7 @@ namespace Service.Implementations
 
         public bool VerifyToken(string token)   //TODO: Validate Audience and Validate issuer of token
         {
+            var key = BuildRsaSigningKey(_pubKey);
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             var validationParameters = new TokenValidationParameters()
             {
@@ -55,7 +62,7 @@ namespace Service.Implementations
                 ValidateIssuer = false,
                 ValidIssuer = "CyberB",
                 ValidAudience = "User",
-                IssuerSigningKey = _securityKey
+                IssuerSigningKey = key
             };
 
             try
@@ -69,6 +76,13 @@ namespace Service.Implementations
             }
             
         }
+        
+        public static RsaSecurityKey BuildRsaSigningKey(RSAParameters parameters){
+            var rsaProvider = new RSACryptoServiceProvider(2048);
+            rsaProvider.ImportParameters(parameters);
+            var key = new RsaSecurityKey(rsaProvider);   
+            return key;
+        } 
 
     }
 }
