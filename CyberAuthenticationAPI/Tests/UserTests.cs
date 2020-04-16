@@ -1,14 +1,16 @@
-using NUnit.Framework;
-using Moq;
-using DataAccess.Interfaces;
 using DataAccess;
+using DataAccess.Interfaces;
+using Moq;
+using NUnit.Framework;
 using Service.Implementations;
 using Service.Interfaces;
-using System.Threading.Tasks;
 using System.Security.Authentication;
+using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace Tests
 {
+    //TODO: Add working test with integrated public/private key pair mocks
     public class Tests
     {
         Mock<IUserRepository> userMock = new Mock<IUserRepository>();
@@ -19,15 +21,26 @@ namespace Tests
         Mock<IKeypairRepository> keypairMock = new Mock<IKeypairRepository>();
 
         UserDto testUser;
+        KeypairDto testKeypair;
         UserService userService;
         byte[] salt;
 
+        RSAParameters pubParameter;
+        RSAParameters privParameter;
+
         [SetUp]
-        public void Setup()
+        public void SetUp()
         {
             userService = new UserService(hashMock.Object, encryptMock.Object, userMock.Object, tokenMock.Object, saltMock.Object, keypairMock.Object);
             salt = new byte[32];
             testUser = new UserDto() { Id = "1", Email = "TestMakker@aids.com", Password = "hashedWachtwoord" };
+            testKeypair = new KeypairDto() { PrivateKey = "privatekey", PublicKey = "publickey", UserId = "1" };
+            keypairMock.Setup(x => x.GetKeypair("1"))
+                       .Returns(Task.Run(() => testKeypair));
+
+            encryptMock.Setup(x => x.ParseXmlString(testKeypair.PrivateKey))
+                       .Returns(new RSAParameters());
+
             userMock.Setup(x => x.GetUser("TestMakker@aids.com"))
                     .Returns(Task.Run(() => testUser));
 
@@ -46,7 +59,7 @@ namespace Tests
             hashMock.Setup(x => x.HashAsync("VeiligWachtwoord", out salt))
                     .Returns(Task.Run(() => "hashedWachtwoord"));
 
-            tokenMock.Setup(x => x.GenerateToken(testUser))
+            tokenMock.Setup(x => x.GenerateToken(testUser, "test"))
                      .Returns(Task.Run(() => "poggers"));
         }
 

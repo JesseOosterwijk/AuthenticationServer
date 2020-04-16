@@ -1,11 +1,12 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace Service.Interfaces
 {
     public interface IEncryptionService
     {
-        public Task<KeyValuePair<byte[], byte[]>> GenerateKeyPair();
-        
+        RSAParameters ParseXmlString(string xml);
+        KeyValuePair<string, string> GenerateKeyXml();
+
     }
 }

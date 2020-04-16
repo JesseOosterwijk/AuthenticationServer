@@ -5,7 +5,7 @@ namespace Service.Interfaces
 {
     public interface ITokenService
     {
-        public Task<string> GenerateToken(UserDto user);
-        bool VerifyToken(string token);
+        public Task<string> GenerateToken(UserDto user, string _privKey);
+        Task<bool> VerifyToken(string token);
     }
 }

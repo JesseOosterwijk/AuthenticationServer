@@ -11,6 +11,7 @@ using DataAccess.Interfaces;
 
 namespace Tests
 {
+    //TODO: Add working test with integrated public/private key pair mocks
     public class TokenTests
     {
         Mock<IEncryptionService> encryptionMock = new Mock<IEncryptionService>();
@@ -21,14 +22,14 @@ namespace Tests
         [SetUp]
         public void Setup()
         {
-            testUser = new UserDto() { Id = "1", Email = "TestMakker@aids.com", Password = "hashedWachtwoord" };
+            testUser = new UserDto() { Id = "1", Email = "TestMakker@aids.com", Password = "hashedWachtwoord" };        
             tokenService = new JwtTokenService(encryptionMock.Object, keypairMock.Object);
         }
 
         [Test]
         public async Task GenerateToken_HasCorrectParameters()
         {
-            string token = await tokenService.GenerateToken(testUser);
+            string token = await tokenService.GenerateToken(testUser, "test");
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             JwtSecurityToken secToken = tokenHandler.ReadJwtToken(token);
             var actualEmail = secToken.Claims.FirstOrDefault(c => c.Value == testUser.Email );
@@ -40,8 +41,8 @@ namespace Tests
         [Test]
         public async Task VerifyToken_ReturnsTrue_IfTokenIsValid()
         {
-            string token = await tokenService.GenerateToken(testUser);
-            bool result = tokenService.VerifyToken(token);
+            string token = await tokenService.GenerateToken(testUser, "test");
+            bool result = await tokenService.VerifyToken(token);
 
             Assert.IsTrue(result);
         }
@@ -51,7 +52,7 @@ namespace Tests
         {
             string invalidToken = "InvalidToken";
 
-            Assert.Throws<ArgumentException>(() => tokenService.VerifyToken(invalidToken));
+            Assert.Throws<ArgumentException>(async () => await tokenService.VerifyToken(invalidToken));
         }
     }
 }

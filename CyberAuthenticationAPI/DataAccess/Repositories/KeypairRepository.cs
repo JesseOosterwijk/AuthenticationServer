@@ -20,7 +20,7 @@ namespace DataAccess.Repositories
             return await _conn.QuerySingleAsync<KeypairDto>("SELECT * FROM KeyPair WHERE UserId = @userId", new { userId });
         }
 
-        public async Task InsertKeypair(KeyValuePair<byte[], byte[]> keyPair, string userId)
+        public async Task InsertKeypair(KeyValuePair<string, string> keyPair, string userId)
         {
             await _conn.ExecuteAsync("INSERT INTO KeyPair (UserId, PublicKey, PrivateKey) Values (@userId, @publicKey, @privateKey)", 
                 new { userId, publicKey = keyPair.Key, privateKey = keyPair.Value });

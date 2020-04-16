@@ -75,7 +75,7 @@ namespace CyberAuthenticationAPI.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.ToString());
-                return BadRequest("oprotten kutaziaat");
+                return BadRequest("Unable to verify token");
             }
         }
      }

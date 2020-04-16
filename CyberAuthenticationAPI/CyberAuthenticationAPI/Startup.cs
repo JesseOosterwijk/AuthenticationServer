@@ -36,6 +36,7 @@ namespace CyberAuthenticationAPI
 
             services.AddSingleton<ITokenService, JwtTokenService>();
             services.AddSingleton<IEncryptionService, RsaEncryptionService>();
+            services.AddSingleton<IKeypairRepository, KeypairRepository>(s => new KeypairRepository(new MySqlConnection()));
             //Deze waardes zouden fout kunnen zijn
             services.AddSingleton<IHashService, Argon2Service>(s => new Argon2Service(100, 4, 8192));
             services.AddSingleton<IUserService, UserService>();

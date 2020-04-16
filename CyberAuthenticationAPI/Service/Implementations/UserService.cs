@@ -36,7 +36,7 @@ namespace Service.Implementations
             
             await _userRepo.InsertUser(userId, email, await hashedPasswordTask);
             await _saltRepo.InsertSalt(userId, salt);
-            KeyValuePair<byte[], byte[]> keyPair = await _encryptionService.GenerateKeyPair();
+            KeyValuePair<string, string> keyPair = _encryptionService.GenerateKeyXml();
             await _keypairRepo.InsertKeypair(keyPair, userId);
         }
 
@@ -62,10 +62,12 @@ namespace Service.Implementations
             UserDto user = await _userRepo.GetUser(email);
             byte[] salt = await _saltRepo.GetSalt(user.Id);
             Task<string> hashTask = _hashService.HashAsync(password, salt);
+            KeypairDto keyPair = await _keypairRepo.GetKeypair(user.Id);
+            string privKey = keyPair.PrivateKey;
 
             if ((await hashTask).SequenceEqual((user.Password)))
             {
-                return await _tokenService.GenerateToken(user);
+                return await _tokenService.GenerateToken(user, privKey);
             }
            
             throw new AuthenticationException();
