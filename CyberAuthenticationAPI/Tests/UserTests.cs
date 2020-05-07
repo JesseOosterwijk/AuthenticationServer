@@ -30,7 +30,7 @@ namespace Tests
             userService = new UserService(hashMock.Object, encryptMock.Object, userMock.Object, tokenMock.Object, saltMock.Object, keypairMock.Object);
             salt = new byte[32];
             testUser = new UserDto() { Id = "1", Email = "TestMakker@aids.com", Password = "hashedWachtwoord" };
-            testKeypair = new KeypairDto() { PrivateKey = "privatekey", PublicKey = "publickey", UserId = "1" };
+            testKeypair = new KeypairDto("1", "publickey", "privatekey");
             keypairMock.Setup(x => x.GetKeypair("1"))
                        .Returns(Task.Run(() => testKeypair));
 

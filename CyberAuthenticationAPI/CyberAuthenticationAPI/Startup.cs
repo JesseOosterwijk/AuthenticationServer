@@ -26,17 +26,16 @@ namespace CyberAuthenticationAPI
         {
             EncodingProvider ppp = CodePagesEncodingProvider.Instance;
             Encoding.RegisterProvider(ppp);
-            
+            MySqlConnection keyDB = new MySqlConnection("Server=116.203.194.69; Port=3306; Database=KeyDB;Uid=keydb;Pwd=A64jDnpjJzdzV3WgFDbzt4jDXHDtoYwD;");
             services.AddSingleton<IUserRepository, UserRepository>(s => new UserRepository(
             new MySqlConnection("Server=116.203.194.69; Port=3306; Database=UserDB;Uid=userdb;Pwd=KNnJsvRAUSyWyfAAbuLsibkM5gkzZ736;")));
-            services.AddSingleton<IKeyRepository, KeyRepository>(s => new KeyRepository(
-                new MySqlConnection("Server=116.203.194.69; Port=3306; Database=KeyDB;Uid=keydb;Pwd=A64jDnpjJzdzV3WgFDbzt4jDXHDtoYwD;")));
+            services.AddSingleton<IKeyRepository, KeyRepository>(s => new KeyRepository(keyDB));
             services.AddSingleton<ISaltRepository, SaltMine>(s => new SaltMine(
                 new MySqlConnection("Server=116.203.194.69; Port=3306; Database=SaltDB;Uid=saltdb;Pwd=7mRB5p7WTkpcDnirFDQ9RWrZseH4C74M;")));
 
             services.AddSingleton<ITokenService, JwtTokenService>();
             services.AddSingleton<IEncryptionService, RsaEncryptionService>();
-            services.AddSingleton<IKeypairRepository, KeypairRepository>(s => new KeypairRepository(new MySqlConnection()));
+            services.AddSingleton<IKeypairRepository, KeypairRepository>(s => new KeypairRepository(keyDB));
             //Deze waardes zouden fout kunnen zijn
             services.AddSingleton<IHashService, Argon2Service>(s => new Argon2Service(100, 4, 8192));
             services.AddSingleton<IUserService, UserService>();

@@ -9,8 +9,8 @@
       <PackageReference Include="BouncyCastle" Version="1.8.6.1" />
       <PackageReference Include="jose-jwt" Version="2.5.0" />
       <PackageReference Include="Konscious.Security.Cryptography.Argon2" Version="1.2.1" />
-      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.5.0" />
-      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.0" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.5.1" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.1" />
     </ItemGroup>
 
     <ItemGroup>

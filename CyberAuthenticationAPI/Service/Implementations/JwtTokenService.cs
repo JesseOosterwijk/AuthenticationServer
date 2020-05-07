@@ -49,7 +49,7 @@ namespace Service.Implementations
             return await Task.Run(() => tokenHandler.WriteToken(securityToken));
         }
 
-        public async Task<bool> VerifyToken(string token)   //TODO: Validate Audience and Validate issuer of token
+        public async Task<bool> VerifyToken(string token)
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             JwtSecurityToken secToken = tokenHandler.ReadJwtToken(token);
@@ -74,14 +74,12 @@ namespace Service.Implementations
             catch (Exception e)
             {
                 throw e;
-            }
-            
+            }           
         }
         
         public RsaSecurityKey BuildRsaSigningKey(string xmlParams){
             var rsaProvider = new RSACryptoServiceProvider(2048);
-            var parameters = _encryptionService.ParseXmlString(xmlParams);
-            rsaProvider.ImportParameters(parameters);
+            rsaProvider.FromXmlString(xmlParams);
             var key = new RsaSecurityKey(rsaProvider);   
             return key;
         }
