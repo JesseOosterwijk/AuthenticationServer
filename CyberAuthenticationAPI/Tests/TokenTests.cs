@@ -8,6 +8,8 @@ using System.Linq;
 using System;
 using System.Threading.Tasks;
 using DataAccess.Interfaces;
+using Microsoft.Win32;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Tests
 {
@@ -16,14 +18,18 @@ namespace Tests
     {
         Mock<IEncryptionService> encryptionMock = new Mock<IEncryptionService>();
         Mock<IKeypairRepository> keypairMock = new Mock<IKeypairRepository>();
+        Mock<JwtTokenService> tokenMock = new Mock<JwtTokenService>();
         JwtTokenService tokenService;
         UserDto testUser;
+        RsaSecurityKey key;
 
         [SetUp]
         public void Setup()
         {
             testUser = new UserDto() { Id = "1", Email = "TestMakker@aids.com", Password = "hashedWachtwoord" };        
             tokenService = new JwtTokenService(encryptionMock.Object, keypairMock.Object);
+            tokenMock.Setup(x => x.BuildRsaSigningKey("test"))
+                .Returns(key);
         }
 
         [Test]

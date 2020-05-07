@@ -10,8 +10,7 @@ using System.Security.Cryptography;
 
 namespace Tests
 {
-    //TODO: Add working test with integrated public/private key pair mocks
-    public class Tests
+    public class UserTests
     {
         Mock<IUserRepository> userMock = new Mock<IUserRepository>();
         Mock<IHashService> hashMock = new Mock<IHashService>();
@@ -24,9 +23,6 @@ namespace Tests
         KeypairDto testKeypair;
         UserService userService;
         byte[] salt;
-
-        RSAParameters pubParameter;
-        RSAParameters privParameter;
 
         [SetUp]
         public void SetUp()
@@ -59,7 +55,7 @@ namespace Tests
             hashMock.Setup(x => x.HashAsync("VeiligWachtwoord", out salt))
                     .Returns(Task.Run(() => "hashedWachtwoord"));
 
-            tokenMock.Setup(x => x.GenerateToken(testUser, "test"))
+            tokenMock.Setup(x => x.GenerateToken(testUser, testKeypair.PrivateKey))
                      .Returns(Task.Run(() => "poggers"));
         }
 
@@ -69,7 +65,7 @@ namespace Tests
             var expected = "poggers";
             var actual = userService.Login("TestMakker@aids.com", "VeiligWachtwoord");
 
-            Assert.AreEqual(await actual, expected);
+            Assert.AreEqual(expected, await actual);
         }
 
         [Test]
