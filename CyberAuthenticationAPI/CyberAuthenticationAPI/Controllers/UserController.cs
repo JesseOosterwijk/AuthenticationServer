@@ -4,6 +4,7 @@ using CyberAuthenticationAPI.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Service.Interfaces;
+using Service.Response;
 
 namespace CyberAuthenticationAPI.Controllers
 {
@@ -32,7 +33,7 @@ namespace CyberAuthenticationAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error logging in");
-                return BadRequest("Doe eens ff normaal");
+                return BadRequest("Error logging in");
             }
         }
 
@@ -47,7 +48,7 @@ namespace CyberAuthenticationAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error registering");
-                return BadRequest("Fuck off");
+                return BadRequest("Error registering");
             }
         }
 
@@ -56,10 +57,12 @@ namespace CyberAuthenticationAPI.Controllers
         {
             try
             {
+                await _userService.DeleteUser("1", "VeiligWachtwoord");
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
+                _logger.LogError(e.ToString());
                 return BadRequest("Wat is AVG?");
             }
         }
@@ -69,13 +72,27 @@ namespace CyberAuthenticationAPI.Controllers
         {
             try
             {
-                this._tokenService.VerifyToken(token.Token);
+                await this._tokenService.VerifyToken(token.Token);
                 return Ok();
             }
             catch (Exception e)
             {
                 _logger.LogError(e.ToString());
                 return BadRequest("Unable to verify token");
+            }
+        }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody]TokenRequest refreshRequest)
+        {
+            try
+            {                
+                return Ok(await this._userService.Refresh(refreshRequest));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                return BadRequest("Unable to refresh token");
             }
         }
      }

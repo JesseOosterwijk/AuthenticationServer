@@ -24,14 +24,14 @@ namespace Service.Implementations
         }
         
         
-        public async Task<string> GenerateToken(UserDto user, string _privKey)
+        public async Task<(string, DateTime)> GenerateToken(UserDto user, string _privKey)
         {
            
             SecurityKey key =  BuildRsaSigningKey(_privKey);
             
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            DateTime now = DateTime.UtcNow;
-            
+            DateTime now = DateTime.UtcNow.AddMinutes(2);
+
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -40,13 +40,13 @@ namespace Service.Implementations
                     new Claim("Id", user.Id)
                 }),
 
-                Expires = now.AddMinutes(2),
+                Expires = now,
                 
                 SigningCredentials =new SigningCredentials(key, SecurityAlgorithms.RsaSha512Signature, SecurityAlgorithms.Sha512Digest),
             };
 
             SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);
-            return await Task.Run(() => tokenHandler.WriteToken(securityToken));
+            return await Task.Run(() => (tokenHandler.WriteToken(securityToken), now));
         }
 
         public async Task<bool> VerifyToken(string token)
@@ -84,5 +84,14 @@ namespace Service.Implementations
             return key;
         }
 
+        public string GenerateRefreshString()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
+        }
     }
 }

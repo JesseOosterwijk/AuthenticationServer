@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Authentication;
+using System.Security.Principal;
 using System.Threading.Tasks;
+using CyberAuthenticationAPI.Response;
 using DataAccess;
 using DataAccess.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
+using Service.Response;
 
 namespace Service.Implementations
 {
@@ -17,7 +22,7 @@ namespace Service.Implementations
         private readonly ITokenService _tokenService;
         private readonly ISaltRepository _saltRepo;
         private readonly IKeypairRepository _keypairRepo;
-        
+
         public UserService(IHashService hashService, IEncryptionService encryptionService, IUserRepository userRepo, ITokenService tokenService, ISaltRepository saltRepo, IKeypairRepository keypairRepo)
         {
             this._hashService = hashService;
@@ -31,9 +36,9 @@ namespace Service.Implementations
         public async Task AddUser(string email, string password)
         {
             Task<string> hashedPasswordTask = _hashService.HashAsync(password, out byte[] salt);
-            
+
             string userId = Guid.NewGuid().ToString();
-            
+
             await _userRepo.InsertUser(userId, email, await hashedPasswordTask);
             await _saltRepo.InsertSalt(userId, salt);
             KeyValuePair<string, string> keyPair = _encryptionService.GenerateKeyXml();
@@ -57,7 +62,7 @@ namespace Service.Implementations
             }
         }
 
-        public async Task<string> Login(string email, string password)
+        public async Task<TokenResponse> Login(string email, string password)
         {
             UserDto user = await _userRepo.GetUser(email);
             byte[] salt = await _saltRepo.GetSalt(user.Id);
@@ -67,10 +72,68 @@ namespace Service.Implementations
 
             if ((await hashTask).SequenceEqual((user.Password)))
             {
-                return await _tokenService.GenerateToken(user, privKey);
+                (string token, DateTime expiration) = await _tokenService.GenerateToken(user, privKey);
+                string refreshToken = _tokenService.GenerateRefreshString();
+                await _userRepo.DeleteRefreshToken(user.Id);
+                await _userRepo.InsertRefreshToken(user.Id, refreshToken);
+                return new TokenResponse()
+                {
+                    Token = token,
+                    TokenExpirationDate = expiration,
+                    RefreshToken = refreshToken
+                };
             }
-           
+
             throw new AuthenticationException();
+        }
+
+        public async Task<TokenResponse> Refresh(TokenRequest response)
+        {
+            string userId = await GetUserIdFromAccessToken(response.Token);
+            KeypairDto keyPair = await _keypairRepo.GetKeypair(userId);
+            string privKey = keyPair.PrivateKey;
+            UserDto user = await _userRepo.GetUserById(userId);
+            string refreshToken = await _userRepo.GetRefreshToken(userId);
+            if(refreshToken == response.RefreshToken)
+            {
+                (string token, DateTime expiration) = await _tokenService.GenerateToken(user, privKey);
+                string newRefreshToken = _tokenService.GenerateRefreshString();
+                await _userRepo.UpdateRefreshToken(userId, newRefreshToken);
+                return new TokenResponse()
+                {
+                    Token = token,
+                    TokenExpirationDate = expiration,
+                    RefreshToken = newRefreshToken
+                };
+            }
+            throw new AuthenticationException("All your base are belong to us");
+        }
+        public async Task<string> GetUserIdFromAccessToken(string accessToken)
+        {
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            JwtSecurityToken secToken = tokenHandler.ReadJwtToken(accessToken);
+            string userId = secToken.Claims.Single(x => x.Type == "Id").Value;
+            string _pubKey = (await _keypairRepo.GetKeypair(userId)).PublicKey;
+            var key = _tokenService.BuildRsaSigningKey(_pubKey);
+            var validationParameters = new TokenValidationParameters()
+            {
+                ValidateLifetime = false,
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidIssuer = "CyberB",
+                ValidAudience = "User",
+                IssuerSigningKey = key
+            };
+
+            try
+            {
+                IPrincipal principal = tokenHandler.ValidateToken(accessToken, validationParameters, out SecurityToken validatedToken);
+                return userId;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }

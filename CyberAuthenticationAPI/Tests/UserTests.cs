@@ -6,7 +6,8 @@ using Service.Implementations;
 using Service.Interfaces;
 using System.Security.Authentication;
 using System.Threading.Tasks;
-using System.Security.Cryptography;
+using System;
+using CyberAuthenticationAPI.Response;
 
 namespace Tests
 {
@@ -34,9 +35,6 @@ namespace Tests
             keypairMock.Setup(x => x.GetKeypair("1"))
                        .Returns(Task.Run(() => testKeypair));
 
-            encryptMock.Setup(x => x.ParseXmlString(testKeypair.PrivateKey))
-                       .Returns(new RSAParameters());
-
             userMock.Setup(x => x.GetUser("TestMakker@aids.com"))
                     .Returns(Task.Run(() => testUser));
 
@@ -56,16 +54,19 @@ namespace Tests
                     .Returns(Task.Run(() => "hashedWachtwoord"));
 
             tokenMock.Setup(x => x.GenerateToken(testUser, testKeypair.PrivateKey))
-                     .Returns(Task.Run(() => "poggers"));
+                     .Returns(Task.Run(() => ("poggers", DateTime.Now)));
         }
 
         [Test]
         public async Task CorrectCredentials_LoginTest()
         {
-            var expected = "poggers";
+            var expected = new TokenResponse()
+            {
+                Token = "poggers"
+            };
             var actual = userService.Login("TestMakker@aids.com", "VeiligWachtwoord");
 
-            Assert.AreEqual(expected, await actual);
+            Assert.AreEqual(expected.Token, (await actual).Token);
         }
 
         [Test]

@@ -8,9 +8,6 @@ using System.Linq;
 using System;
 using System.Threading.Tasks;
 using DataAccess.Interfaces;
-using Microsoft.Win32;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Cryptography;
 
 namespace Tests
 {
@@ -38,7 +35,7 @@ namespace Tests
         [Test]
         public async Task GenerateToken_HasCorrectParameters()
         {
-            string token = await tokenService.GenerateToken(testUser, testKeyPair.PrivateKey);
+            (string token, DateTime expiration) = await tokenService.GenerateToken(testUser, testKeyPair.PrivateKey);
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             JwtSecurityToken secToken = tokenHandler.ReadJwtToken(token);
             var actualEmail = secToken.Claims.FirstOrDefault(c => c.Value == testUser.Email );
@@ -50,7 +47,7 @@ namespace Tests
         [Test]
         public async Task VerifyToken_ReturnsTrue_IfTokenIsValid()
         {
-            string token = await tokenService.GenerateToken(testUser, testKeyPair.PrivateKey);
+            (string token, DateTime expiration) = await tokenService.GenerateToken(testUser, testKeyPair.PrivateKey);
             bool result = await tokenService.VerifyToken(token);
 
             Assert.IsTrue(result);

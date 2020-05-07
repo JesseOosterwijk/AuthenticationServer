@@ -39,5 +39,32 @@ namespace DataAccess.Repositories
         {
             return await _conn.QuerySingleAsync<UserDto>("SELECT * FROM User WHERE Email = @email", new {email});
         }
+
+        public async Task<UserDto> GetUserById(string userId)
+        {
+            return await _conn.QuerySingleAsync<UserDto>("SELECT * FROM User WHERE Id = @userId", new { userId });
+        }
+
+        public async Task InsertRefreshToken(string userId, string token)
+        {
+            await _conn.ExecuteAsync("INSERT INTO RefreshToken (RefreshToken, UserId) VALUES (@token, @userId)",
+            new { token, userId });
+        }
+
+        public async Task<string> GetRefreshToken(string userId)
+        {
+            return await _conn.QuerySingleAsync<string>("SELECT RefreshToken FROM RefreshToken WHERE UserId = @userId", new { userId });
+        }
+
+        public async Task<int> UpdateRefreshToken(string userId, string token)
+        {
+            string sql = "Update RefreshToken SET RefreshToken = @token WHERE UserId = @userId";
+            return await _conn.ExecuteAsync(sql, new { userId, token });
+        }
+
+        public async Task<int> DeleteRefreshToken(string userId)
+        {
+            return await _conn.ExecuteAsync("DELETE FROM RefreshToken WHERE UserId = @userId", new { userId });
+        }
     }
 }
