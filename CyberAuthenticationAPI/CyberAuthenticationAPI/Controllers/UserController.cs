@@ -38,7 +38,7 @@ namespace CyberAuthenticationAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody]RegisterRequest request)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace CyberAuthenticationAPI.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.ToString());
-                return BadRequest("Wat is AVG?");
+                return BadRequest("Could not delete data");
             }
         }
 
@@ -93,6 +93,21 @@ namespace CyberAuthenticationAPI.Controllers
             {
                 _logger.LogError(e.ToString());
                 return BadRequest("Unable to refresh token");
+            }
+        }
+
+        [HttpPost("getuserdata")]
+        public async Task<IActionResult> GetUserData([FromBody]VerifyRequest token)
+        {
+            try
+            {
+                string userId = await this._userService.GetUserIdFromAccessToken(token.Token);
+                return Ok(await this._userService.GetUserById(userId));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                return BadRequest("Unable to get data");
             }
         }
      }

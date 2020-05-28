@@ -94,7 +94,7 @@ namespace Service.Implementations
             string privKey = keyPair.PrivateKey;
             UserDto user = await _userRepo.GetUserById(userId);
             string refreshToken = await _userRepo.GetRefreshToken(userId);
-            if(refreshToken == response.RefreshToken)
+            if (refreshToken == response.RefreshToken)
             {
                 (string token, DateTime expiration) = await _tokenService.GenerateToken(user, privKey);
                 string newRefreshToken = _tokenService.GenerateRefreshString();
@@ -108,6 +108,7 @@ namespace Service.Implementations
             }
             throw new AuthenticationException("All your base are belong to us");
         }
+
         public async Task<string> GetUserIdFromAccessToken(string accessToken)
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
@@ -124,16 +125,13 @@ namespace Service.Implementations
                 ValidAudience = "User",
                 IssuerSigningKey = key
             };
+            IPrincipal principal = tokenHandler.ValidateToken(accessToken, validationParameters, out SecurityToken validatedToken);
+            return userId;
+        }
 
-            try
-            {
-                IPrincipal principal = tokenHandler.ValidateToken(accessToken, validationParameters, out SecurityToken validatedToken);
-                return userId;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+        public async Task<UserDto> GetUserById(string userId)
+        {
+            return await _userRepo.GetUserById(userId);
         }
     }
 }
