@@ -41,7 +41,7 @@ namespace Service.Implementations
 
             string userId = Guid.NewGuid().ToString();
 
-            email = _stringEncryptionService.EncryptString(email, "ajeofijqeia");
+            email = _stringEncryptionService.EncryptString(email);
 
             await _userRepo.InsertUser(userId, email, await hashedPasswordTask);
             await _saltRepo.InsertSalt(userId, salt);
@@ -68,7 +68,7 @@ namespace Service.Implementations
 
         public async Task<TokenResponse> Login(string email, string password)
         {
-            email = _stringEncryptionService.EncryptString(email, "ajeofijqeia");
+            email = _stringEncryptionService.EncryptString(email);
             UserDto user = await _userRepo.GetUser(email);
             byte[] salt = await _saltRepo.GetSalt(user.Id);
             Task<string> hashTask = _hashService.HashAsync(password, salt);
@@ -137,8 +137,15 @@ namespace Service.Implementations
         public async Task<UserDto> GetUserById(string userId)
         {
             UserDto user = await _userRepo.GetUserById(userId);
-            user.Email = _stringEncryptionService.DecryptString(user.Email, "ajeofijqeia");
+            user.Email = _stringEncryptionService.DecryptString(user.Email);
             return user;
+        }
+
+        public async Task EditUser(string token, string newEmail)
+        {
+            string userId = await GetUserIdFromAccessToken(token);
+            string encryptedEmail = _stringEncryptionService.EncryptString(newEmail);
+            await _userRepo.UpdateUser(userId, encryptedEmail, null);
         }
     }
 }

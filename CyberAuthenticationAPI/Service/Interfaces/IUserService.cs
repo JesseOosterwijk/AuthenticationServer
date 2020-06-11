@@ -13,5 +13,6 @@ namespace Service.Interfaces
         Task<TokenResponse> Refresh(TokenRequest response);
         Task<string> GetUserIdFromAccessToken(string accessToken);
         Task<UserDto> GetUserById(string userId);
+        Task EditUser(string token, string newEmail);
     }
 }

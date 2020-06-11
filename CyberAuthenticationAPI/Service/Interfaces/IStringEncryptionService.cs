@@ -6,8 +6,8 @@ namespace Service.Interfaces
 {
     public interface IStringEncryptionService
     {
-        public string EncryptString(string toEncrypt, string encryptionKey);
+        public string EncryptString(string toEncrypt);
 
-        public string DecryptString(string toDecrypt, string encryptionKey);
+        public string DecryptString(string toDecrypt);
     }
 }

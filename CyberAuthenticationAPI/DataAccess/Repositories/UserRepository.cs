@@ -27,7 +27,7 @@ namespace DataAccess.Repositories
 
         public async Task<int> UpdateUser(string userId, string? email, string? password)
         {
-            string sql = (email == null) ? "Update User SET Email = @email WHERE Id = @userId" : "Update User SET Password = @password WHERE Id = @userId";
+            string sql = (email != null) ? "Update User SET Email = @email WHERE Id = @userId" : "Update User SET Password = @password WHERE Id = @userId";
             return await _conn.ExecuteAsync(sql, new {userId, password, email});
         }
 

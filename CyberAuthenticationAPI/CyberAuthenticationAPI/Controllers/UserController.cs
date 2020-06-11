@@ -119,5 +119,20 @@ namespace CyberAuthenticationAPI.Controllers
                 return BadRequest("Unable to get data");
             }
         }
+
+        [HttpPut("updateuser")]
+        public async Task<IActionResult> UpdateUser([FromBody]UpdateRequest updateRequest)
+        {
+            try
+            {
+                await this._userService.EditUser(updateRequest.Token, updateRequest.Email);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                return BadRequest("Unable to update user");
+            }
+        }
      }
 }
