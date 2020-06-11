@@ -48,7 +48,7 @@ namespace Service.Implementations
         public async Task DeleteUser(string userId, string password)
         {
 
-            UserDto user = await _userRepo.GetUser(userId);
+            UserDto user = await _userRepo.GetUserById(userId);
             byte[] salt = await _saltRepo.GetSalt(userId);
             if (user.Password.SequenceEqual(await _hashService.HashAsync(password, salt)))
             {

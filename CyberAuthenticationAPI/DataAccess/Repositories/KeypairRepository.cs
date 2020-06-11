@@ -28,7 +28,7 @@ namespace DataAccess.Repositories
 
         public async Task DeleteKeypair(string userId)
         {
-            await _conn.ExecuteAsync("DELETE KeyPair WHERE UserId = @userId", new { userId });
+            await _conn.ExecuteAsync("DELETE FROM KeyPair WHERE UserId = @userId", new { userId });
         }
     }
 }

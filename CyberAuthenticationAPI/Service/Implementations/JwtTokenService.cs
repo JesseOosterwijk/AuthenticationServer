@@ -22,15 +22,15 @@ namespace Service.Implementations
             _encryptionService = encryptionService;
             _keyPairRepo = keyPairRepo;
         }
-        
-        
+
+
         public async Task<(string, DateTime)> GenerateToken(UserDto user, string _privKey)
         {
-           
-            SecurityKey key =  BuildRsaSigningKey(_privKey);
-            
+
+            SecurityKey key = BuildRsaSigningKey(_privKey);
+
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            DateTime now = DateTime.UtcNow.AddMinutes(2);
+            DateTime expirated = DateTime.Now.AddMinutes(2);
 
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -40,13 +40,13 @@ namespace Service.Implementations
                     new Claim("Id", user.Id)
                 }),
 
-                Expires = now,
-                
-                SigningCredentials =new SigningCredentials(key, SecurityAlgorithms.RsaSha512Signature, SecurityAlgorithms.Sha512Digest),
+                Expires = expirated,
+
+                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.RsaSha512Signature, SecurityAlgorithms.Sha512Digest),
             };
 
             SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);
-            return await Task.Run(() => (tokenHandler.WriteToken(securityToken), now));
+            return await Task.Run(() => (tokenHandler.WriteToken(securityToken), expirated));
         }
 
         public async Task<bool> VerifyToken(string token)
@@ -63,7 +63,8 @@ namespace Service.Implementations
                 ValidateIssuer = false,
                 ValidIssuer = "CyberB",
                 ValidAudience = "User",
-                IssuerSigningKey = key
+                IssuerSigningKey = key,
+                ClockSkew = new TimeSpan(0, 0, 1)
             };
 
             try
@@ -74,13 +75,14 @@ namespace Service.Implementations
             catch (Exception e)
             {
                 throw e;
-            }           
+            }
         }
-        
-        public RsaSecurityKey BuildRsaSigningKey(string xmlParams){
+
+        public RsaSecurityKey BuildRsaSigningKey(string xmlParams)
+        {
             var rsaProvider = new RSACryptoServiceProvider(2048);
             rsaProvider.FromXmlString(xmlParams);
-            var key = new RsaSecurityKey(rsaProvider);   
+            var key = new RsaSecurityKey(rsaProvider);
             return key;
         }
 

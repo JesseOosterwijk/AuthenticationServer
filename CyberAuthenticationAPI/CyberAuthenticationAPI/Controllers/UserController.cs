@@ -53,12 +53,21 @@ namespace CyberAuthenticationAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public async Task<IActionResult> Delete()
+        public async Task<IActionResult> Delete([FromBody]DeleteRequest request)
         {
             try
-            {
-                await _userService.DeleteUser("1", "VeiligWachtwoord");
-                return Ok();
+            {                
+                if(await _tokenService.VerifyToken(request.Token))
+                {
+                    string userId = await this._userService.GetUserIdFromAccessToken(request.Token);
+                    await _userService.DeleteUser(userId, request.Password);
+                    return Ok();
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+
             }
             catch (Exception e)
             {

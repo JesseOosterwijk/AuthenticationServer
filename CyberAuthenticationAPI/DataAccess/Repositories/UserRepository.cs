@@ -21,12 +21,13 @@ namespace DataAccess.Repositories
 
         public async Task<int> DeleteUser(string userId)
         {
-            return await _conn.ExecuteAsync("DELETE FROM USER WHERE Id = @id", new {id = userId});
+            await _conn.ExecuteAsync("DELETE FROM RefreshToken WHERE UserId = @id", new { id = userId });
+            return await _conn.ExecuteAsync("DELETE FROM User WHERE Id = @id", new {id = userId});
         }
 
         public async Task<int> UpdateUser(string userId, string? email, string? password)
         {
-            string sql = (email == null) ? "Update USER SET Email = @email WHERE Id = @userId" : "Update USER SET Password = @password WHERE Id = @userId";
+            string sql = (email == null) ? "Update User SET Email = @email WHERE Id = @userId" : "Update User SET Password = @password WHERE Id = @userId";
             return await _conn.ExecuteAsync(sql, new {userId, password, email});
         }
 
