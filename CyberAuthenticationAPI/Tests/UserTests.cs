@@ -19,6 +19,7 @@ namespace Tests
         Mock<ISaltRepository> saltMock = new Mock<ISaltRepository>();
         Mock<ITokenService> tokenMock = new Mock<ITokenService>();
         Mock<IKeypairRepository> keypairMock = new Mock<IKeypairRepository>();
+        IStringEncryptionService stringEncryptionService = new StringEncryptionService();
 
         UserDto testUser;
         KeypairDto testKeypair;
@@ -28,7 +29,7 @@ namespace Tests
         [SetUp]
         public void SetUp()
         {
-            userService = new UserService(hashMock.Object, encryptMock.Object, userMock.Object, tokenMock.Object, saltMock.Object, keypairMock.Object);
+            userService = new UserService(hashMock.Object, encryptMock.Object, userMock.Object, tokenMock.Object, saltMock.Object, keypairMock.Object, stringEncryptionService);
             salt = new byte[32];
             testUser = new UserDto() { Id = "1", Email = "TestMakker@aids.com", Password = "hashedWachtwoord" };
             testKeypair = new KeypairDto("1", "publickey", "privatekey");

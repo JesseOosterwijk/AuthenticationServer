@@ -41,6 +41,7 @@ namespace CyberAuthenticationAPI
             //Deze waardes zouden fout kunnen zijn
             services.AddSingleton<IHashService, Argon2Service>(s => new Argon2Service(100, 4, 8192));
             services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IStringEncryptionService, StringEncryptionService>();
             
             services.AddControllers();
         }
