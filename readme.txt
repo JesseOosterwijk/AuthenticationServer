@@ -69,4 +69,4 @@ These measures are:
 If you have any other questions, feel free to ask.
     
 Kind regards,
-Authisten
+Secure Authentication
