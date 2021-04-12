@@ -1,21 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using DataAccess.Interfaces;
 using DataAccess.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
-using Service;
 using Service.Implementations;
 using Service.Interfaces;
 
@@ -35,20 +26,23 @@ namespace CyberAuthenticationAPI
         {
             EncodingProvider ppp = CodePagesEncodingProvider.Instance;
             Encoding.RegisterProvider(ppp);
+            MySqlConnection keyDB = new MySqlConnection(Configuration["ConnectionStrings:KeyDB"]);
+            services.AddSingleton<IKeyRepository, KeyRepository>(s => new KeyRepository(keyDB));
+            services.AddSingleton<IKeypairRepository, KeypairRepository>(s => new KeypairRepository(keyDB));
             
             services.AddSingleton<IUserRepository, UserRepository>(s => new UserRepository(
-            new MySqlConnection("Server=116.203.194.69; Port=3306; Database=UserDB;Uid=userdb;Pwd=KNnJsvRAUSyWyfAAbuLsibkM5gkzZ736;")));
-            services.AddSingleton<IKeyRepository, KeyRepository>(s => new KeyRepository(
-                new MySqlConnection("Server=116.203.194.69; Port=3306; Database=KeyDB;Uid=keydb;Pwd=A64jDnpjJzdzV3WgFDbzt4jDXHDtoYwD;")));
+            new MySqlConnection(Configuration["ConnectionStrings:UserDB"])));
             services.AddSingleton<ISaltRepository, SaltMine>(s => new SaltMine(
-                new MySqlConnection("Server=116.203.194.69; Port=3306; Database=SaltDB;Uid=saltdb;Pwd=7mRB5p7WTkpcDnirFDQ9RWrZseH4C74M;")));
+                new MySqlConnection(Configuration["ConnectionStrings:SaltDB"])));
 
             services.AddSingleton<ITokenService, JwtTokenService>();
             services.AddSingleton<IEncryptionService, RsaEncryptionService>();
+            
             //Deze waardes zouden fout kunnen zijn
             services.AddSingleton<IHashService, Argon2Service>(s => new Argon2Service(100, 4, 8192));
             services.AddSingleton<IUserService, UserService>();
-            
+            services.AddSingleton<IStringEncryptionService, StringEncryptionService>(s => new StringEncryptionService("HR$2pIjHR$2pIj12"));
+
             services.AddControllers();
         }
 

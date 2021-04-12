@@ -1,20 +1,17 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Service.Interfaces;
 
 namespace Service.Implementations
 {
     public class RsaEncryptionService : IEncryptionService
     {
-        /*public Task<KeyValuePair<string, string>> GenerateKeyPair()
+        public KeyValuePair<string, string> GenerateKeyXml()
         {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-            rsa.ExportRSAPrivateKey();
-        }*/
-        public Task<KeyValuePair<string, string>> GenerateKeyPair()
-        {
-            throw new System.NotImplementedException();
+            RSACryptoServiceProvider provider = new RSACryptoServiceProvider(2048);
+            string _privKey = provider.ToXmlString(true);
+            string _pubKey = provider.ToXmlString(false);
+            return new KeyValuePair<string, string>(_pubKey, _privKey);
         }
     }
 }
